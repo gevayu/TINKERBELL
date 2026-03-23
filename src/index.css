@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-aurora: aurora 60s linear infinite;
+}
+
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --transparent: transparent;
+  --blue-300: #c4b5f7;
+  --blue-400: #9780ED;
+  --blue-500: #7c3aed;
+  --indigo-300: #a78bfa;
+  --violet-200: #ede9fe;
+}

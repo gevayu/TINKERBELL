@@ -1,0 +1,750 @@
+import React, { useState, useEffect } from 'react';
+import {
+  ArrowLeft,
+  Activity,
+  BellRing,
+  TrendingUp,
+  ShieldAlert,
+  Smartphone,
+  Mail,
+  MailOpen,
+  Zap,
+  Clock,
+  Users,
+  CheckCircle2,
+  BarChart3,
+  Lightbulb,
+  ChevronRight,
+  Quote,
+  ShieldCheck,
+  DoorOpen,
+  Percent,
+  CreditCard,
+  Utensils,
+  Tags,
+  CarFront,
+  BedDouble,
+  UserX,
+  PieChart,
+  Timer,
+  CheckCircle
+} from 'lucide-react';
+
+// רכיב ספרה בודדת מתגלגלת
+const RollingDigit = ({ digit }) => {
+  return (
+    <div className="inline-block h-[1em] overflow-hidden relative">
+      <div
+        className="flex flex-col transition-transform duration-700 ease-out"
+        style={{ transform: `translateY(-${digit * 10}%)` }}
+      >
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+          <span key={n} className="leading-none">{n}</span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// רכיב מונה שלם עם אנימציית גלגול ופסיקים
+const RollingNumber = ({ value }) => {
+  const numberString = value.toString();
+  const digits = numberString.split('');
+
+  return (
+    <div className="flex items-baseline" dir="ltr">
+      <span className="mr-2">₪</span>
+      {digits.map((char, index) => {
+        const posFromEnd = digits.length - index;
+        const needsComma = posFromEnd > 0 && posFromEnd % 3 === 0 && index !== 0;
+
+        return (
+          <React.Fragment key={index}>
+            {needsComma && <span>,</span>}
+            <RollingDigit digit={parseInt(char, 10)} />
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+};
+
+export default function App() {
+  const [scrolled, setScrolled] = useState(false);
+  const [accumulatedAmount, setAccumulatedAmount] = useState(245081);
+  const [alertIndex, setAlertIndex] = useState(0);
+
+  // התרעות מעורבות - קריטיות וחיוביות
+  const alerts = [
+    { type: 'critical', title: 'התרעה קריטית', text: 'זוהתה הנחה של ₪450 ללא אישור מנהל בקבלה.', icon: BellRing, color: 'bg-indigo-500', textColor: 'text-slate-500' },
+    { type: 'success', title: 'אירוע טופל', text: 'דמי ביטול נגבו באופן אוטומטי מחדר 402. נחסך ₪1,200.', icon: CheckCircle, color: 'bg-emerald-500', textColor: 'text-emerald-600' },
+    { type: 'critical', title: 'התרעה קריטית', text: 'חדר 302 סומן כאי-הגעה ללא חיוב דמי ביטול.', icon: BellRing, color: 'bg-indigo-500', textColor: 'text-slate-500' },
+    { type: 'success', title: 'אירוע טופל', text: 'שדרוג חדר לא מאושר חויב רטרואקטיבית. נחסך ₪350.', icon: CheckCircle, color: 'bg-emerald-500', textColor: 'text-emerald-600' },
+    { type: 'critical', title: 'התרעה קריטית', text: 'זוהתה עזיבה מאוחרת בחדר 105 ללא תוספת תשלום.', icon: BellRing, color: 'bg-indigo-500', textColor: 'text-slate-500' },
+    { type: 'success', title: 'אירוע טופל', text: 'חיוב בר חסר שויך בהצלחה לחדר 210. נחסך ₪180.', icon: CheckCircle, color: 'bg-emerald-500', textColor: 'text-emerald-600' }
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+
+    const counterInterval = setInterval(() => {
+      const addition = Math.floor(Math.random() * 40) + 10;
+      setAccumulatedAmount(prev => prev + addition);
+    }, 15000);
+
+    const alertInterval = setInterval(() => {
+      setAlertIndex((prev) => (prev + 1) % alerts.length);
+    }, 10000);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(counterInterval);
+      clearInterval(alertInterval);
+    };
+  }, []);
+
+  const currentAlert = alerts[alertIndex];
+
+  return (
+    <div dir="rtl" className="min-h-screen bg-[#FCFCFD] text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 overflow-x-clip" style={{ fontFamily: "'Polin', system-ui, -apple-system, sans-serif" }}>
+      <style dangerouslySetInnerHTML={{__html: `
+        @font-face { font-family: 'Polin'; src: url('Polin-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Polin'; src: url('Polin-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Polin'; src: url('Polin-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Polin'; src: url('Polin-Semibold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Polin'; src: url('Polin-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+
+        @keyframes scroll-rtl {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(calc(100% + 2rem)); }
+        }
+        .animate-marquee-rtl {
+          animation: scroll-rtl 40s linear infinite;
+        }
+        .group:hover .animate-marquee-rtl {
+          animation-play-state: paused;
+        }
+
+        @keyframes scroll-vertical {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+        .animate-chat-vertical {
+          animation: scroll-vertical 25s linear infinite;
+        }
+        .group:hover .animate-chat-vertical {
+          animation-play-state: paused;
+        }
+
+        @keyframes heartbeat {
+          0%, 100% { transform: scale(1); }
+          15% { transform: scale(1.1); }
+          30% { transform: scale(1); }
+          45% { transform: scale(1.1); }
+          60% { transform: scale(1); }
+        }
+        .animate-heartbeat {
+          animation: heartbeat 2.5s ease-in-out infinite;
+        }
+
+        @keyframes bell-swing {
+          0%, 100% { transform: rotate(0); }
+          10%, 30%, 50% { transform: rotate(15deg); }
+          20%, 40%, 60% { transform: rotate(-15deg); }
+          70% { transform: rotate(0); }
+        }
+        .animate-bell-swing {
+          animation: bell-swing 3s ease-in-out infinite;
+          transform-origin: top;
+        }
+
+        @keyframes success-pop {
+          0% { transform: scale(0.5); opacity: 0; }
+          50% { transform: scale(1.2); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-success-pop {
+          animation: success-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+
+        @keyframes wiggle {
+          0%, 100% { transform: rotate(0deg); }
+          25% { transform: rotate(10deg); }
+          75% { transform: rotate(-10deg); }
+        }
+        .animate-wiggle {
+          animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes float-subtle {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        .animate-float-subtle {
+          animation: float-subtle 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-and-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-14px); }
+        }
+        .animate-glow-and-float {
+          animation: glow-and-float 3s ease-in-out infinite;
+        }
+
+        @keyframes car-move {
+          0%, 100% { transform: translateX(0); }
+          50% { transform: translateX(5px); }
+        }
+        .animate-car-move {
+          animation: car-move 2s ease-in-out infinite;
+        }
+
+        @keyframes mail-closed-fade {
+          0%, 20% { opacity: 1; transform: translateY(0) scale(1); }
+          25%, 75% { opacity: 0; transform: translateY(-2px) scale(1.05); }
+          80%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes mail-open-fade {
+          0%, 20% { opacity: 0; transform: translateY(2px) scale(0.95); }
+          25%, 75% { opacity: 1; transform: translateY(0) scale(1); }
+          80%, 100% { opacity: 0; transform: translateY(2px) scale(0.95); }
+        }
+
+        @keyframes glow-bulb {
+          0%, 100% { filter: drop-shadow(0 0 2px rgba(250, 204, 21, 0.2)); color: #475569; }
+          50% { filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.6)); color: #ca8a04; }
+        }
+        .animate-glow-bulb {
+          animation: glow-bulb 3s ease-in-out infinite;
+        }
+
+        @keyframes fade-in-right {
+          0% { opacity: 0; transform: translateX(10px); }
+          100% { opacity: 1; transform: translateX(0); }
+        }
+        .animate-fade-in-right {
+          animation: fade-in-right 0.5s ease-out forwards;
+        }
+      `}} />
+
+      {/* Floating Pill Navigation */}
+      <nav className={`fixed left-0 right-0 z-[100] transition-all duration-300 ${scrolled ? 'top-2 lg:top-4' : 'top-4 lg:top-8'}`}>
+        <div className="w-[calc(100%-1rem)] md:w-[calc(100%-3rem)] max-w-[88rem] mx-auto">
+          <div className={`flex justify-between items-center h-16 lg:h-20 px-5 lg:px-8 rounded-2xl lg:rounded-[2rem] transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-lg shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-slate-200/60' : 'bg-white/50 backdrop-blur-md border border-white/40 shadow-sm'}`}>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-slate-900 flex items-center justify-center shadow-sm">
+                <Zap className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
+              </div>
+              <span className="text-xl lg:text-2xl font-bold tracking-tight text-slate-900">Tinkerbell.</span>
+            </div>
+
+            <div className="hidden md:flex items-center gap-10 text-[15px] font-medium text-slate-600">
+              <a href="#features" className="hover:text-slate-900 transition-colors">פיצ'רים</a>
+              <a href="#how-it-works" className="hover:text-slate-900 transition-colors">איך זה עובד</a>
+              <a href="#testimonials" className="hover:text-slate-900 transition-colors">לקוחות</a>
+            </div>
+
+            <div className="hidden md:flex items-center gap-6">
+              <button className="text-[15px] font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                התחברות
+              </button>
+              <button className="text-[15px] font-medium bg-indigo-600 text-white px-6 py-2.5 rounded-full hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-600/20 hover:-translate-y-0.5 transition-all duration-300">
+                ניסיון חינם
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main className="relative w-full">
+
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-16 lg:pt-48 lg:pb-32 overflow-hidden">
+          <div className="absolute top-0 right-0 w-full h-[800px] bg-gradient-to-b from-slate-50 to-transparent -z-10"></div>
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 relative z-10 w-full">
+            <div className="grid lg:grid-cols-12 gap-16 items-center">
+
+              <div className="lg:col-span-7">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white ring-1 ring-slate-900/5 shadow-sm text-sm font-medium text-slate-700 mb-8 animate-fade-in-up">
+                  <span className="flex h-2 w-2 rounded-full bg-indigo-600"></span>
+                  Enterprise-Ready AI System
+                </div>
+
+                <h1 className="text-[3.5rem] leading-[1.05] lg:text-[5.5rem] font-bold tracking-tighter mb-8 text-slate-900">
+                  כל יום שעובר,<br/>
+                  המלון מפסיד כסף.<br />
+                  <span className="text-indigo-600 relative inline-block">
+                    אנחנו עוצרים את זה.
+                    <div className="absolute -bottom-2 left-0 w-full h-1 bg-indigo-100 rounded-full"></div>
+                  </span>
+                </h1>
+
+                <p className="text-xl lg:text-2xl text-slate-500 mb-10 leading-relaxed max-w-2xl font-light">
+                  מערכת ה-AI החכמה ביותר לניהול, בקרה והגדלת רווחיות מלונות. בלי אקסלים, בלי ניחושים, בלי כאב ראש.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-5">
+                  <button className="group flex items-center justify-center gap-3 bg-indigo-600 text-white px-8 py-4.5 rounded-full text-lg font-medium hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-600/20 hover:-translate-y-1 transition-all duration-300">
+                    התחילו חודש ניסיון
+                    <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1.5 transition-transform" />
+                  </button>
+                  <button className="flex items-center justify-center gap-2 bg-white ring-1 ring-slate-200 text-slate-700 px-8 py-4.5 rounded-full text-lg font-medium hover:bg-slate-50 hover:ring-slate-300 transition-all duration-300 shadow-sm">
+                    צפו בהדגמה
+                  </button>
+                </div>
+                <p className="mt-6 text-sm text-slate-400 flex items-center gap-2 font-medium">
+                  <CheckCircle2 className="w-4 h-4 text-slate-300" /> ללא עלות התקנה וללא התחייבות
+                </p>
+              </div>
+
+              {/* Premium UI Widget Mockup */}
+              <div className="lg:col-span-5 relative">
+                <div className="aspect-[4/5] lg:aspect-square rounded-[2rem] bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] ring-1 ring-slate-900/5 relative flex flex-col overflow-hidden transform lg:-rotate-2 hover:rotate-0 transition-transform duration-700">
+                  <div className="p-8 pb-0">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center">
+                        <Activity className="w-6 h-6 text-indigo-600 animate-heartbeat" />
+                      </div>
+                      <div className="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-sm font-semibold flex items-center gap-1.5">
+                        <TrendingUp className="w-4 h-4" /> +13.5% ROI
+                      </div>
+                    </div>
+                    <h3 className="text-slate-500 text-sm font-medium mt-6 mb-1 uppercase tracking-wider">נחסך החודש (Live)</h3>
+                    <div className="text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight h-[1.2em] overflow-hidden flex items-center">
+                      <RollingNumber value={accumulatedAmount} />
+                    </div>
+                  </div>
+
+                  {/* Scrolling Alerts Stream */}
+                  <div className="flex-1 relative overflow-hidden mt-6 px-8">
+                    <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-white via-white/80 to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
+
+                    <div className="flex flex-col gap-3 animate-chat-vertical pt-2">
+                      {[1, 2].map((set) => (
+                        <React.Fragment key={set}>
+                          {[
+                            { title: "אי-הגעה לא חויבה", time: "לפני 2 דקות", amount: "₪1,200", status: "טופל בהצלחה", color: "bg-indigo-600", textStatus: "text-emerald-600" },
+                            { title: "טעות גבייה - חדר 402", time: "לפני 15 דקות", amount: "₪890", status: "טופל בהצלחה", color: "bg-emerald-500", textStatus: "text-emerald-600" },
+                            { title: "הנחה ללא אישור", time: "לפני שעה", amount: "₪450", status: "ממתין למנהל", color: "bg-yellow-500", textStatus: "text-yellow-600" },
+                            { title: "עזיבה מאוחרת", time: "לפני שעתיים", amount: "₪350", status: "חויב אוטומטית", color: "bg-indigo-600", textStatus: "text-emerald-600" },
+                            { title: "חיוב בר חסר", time: "לפני 3 שעות", amount: "₪120", status: "שויך לחדר", color: "bg-purple-500", textStatus: "text-emerald-600" },
+                            { title: "שדרוג חדר שגוי", time: "לפני 5 שעות", amount: "₪600", status: "הפרש נגבה", color: "bg-blue-500", textStatus: "text-emerald-600" }
+                          ].map((alert, i) => (
+                            <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-slate-50/80 group-hover:bg-slate-100 transition-colors shrink-0">
+                              <div className="flex items-center gap-4">
+                                <div className={`w-2.5 h-2.5 rounded-full ${alert.color}`}></div>
+                                <div>
+                                  <div className="text-[14px] font-semibold text-slate-900">{alert.title}</div>
+                                  <div className="text-xs font-medium text-slate-500 mt-0.5">{alert.time}</div>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-[14px] font-bold text-slate-900">{alert.amount}</div>
+                                <div className={`text-[11px] font-medium mt-0.5 ${alert.textStatus}`}>{alert.status}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rotating Alert Widget - Raised by 80px from the lowered position */}
+                <div className="absolute -left-8 p-5 rounded-2xl bg-white/95 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.12)] ring-1 ring-slate-200/60 max-w-[260px] animate-bounce z-20" style={{ top: 'calc(33.33% + 70px)', animationDuration: '4s'}}>
+                  <div className="flex items-start gap-4">
+                    <div className={`w-10 h-10 rounded-full ${currentAlert.color} flex items-center justify-center shrink-0 shadow-lg shadow-indigo-200 transition-all duration-500`}>
+                      <currentAlert.icon
+                        key={alertIndex}
+                        className={`w-5 h-5 text-white ${currentAlert.type === 'critical' ? 'animate-bell-swing' : 'animate-success-pop'}`}
+                      />
+                    </div>
+                    <div>
+                      <div className={`text-[13px] font-bold mb-1 transition-colors duration-500 ${currentAlert.type === 'critical' ? 'text-indigo-600' : 'text-emerald-600'}`}>
+                        {currentAlert.title}
+                      </div>
+                      <div key={alertIndex} className={`text-[13px] leading-relaxed animate-fade-in-right font-medium ${currentAlert.textColor}`}>
+                        {currentAlert.text}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="py-16 bg-white border-y border-slate-100">
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
+            <p className="text-center text-sm font-semibold text-slate-400 mb-12 uppercase tracking-[0.2em]">
+              מעל 50 רשתות ומלונות מובילים
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8">
+              <div className="text-center group cursor-default">
+                <div className="text-6xl lg:text-7xl font-bold text-slate-900 mb-4 tracking-tighter transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(79,70,229,0.4)] group-hover:-translate-y-2">
+                  50<span className="text-indigo-600">%</span>
+                </div>
+                <div className="text-base lg:text-lg text-slate-500 font-medium transition-colors duration-500 group-hover:text-indigo-600">
+                  חיסכון בכוח אדם
+                </div>
+              </div>
+              <div className="text-center group cursor-default">
+                <div className="text-6xl lg:text-7xl font-bold text-slate-900 mb-4 tracking-tighter transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(79,70,229,0.4)] group-hover:-translate-y-2">
+                  13<span className="text-indigo-600">%</span>
+                </div>
+                <div className="text-base lg:text-lg text-slate-500 font-medium transition-colors duration-500 group-hover:text-indigo-600">
+                  עלייה ברווחיות
+                </div>
+              </div>
+              <div className="text-center group cursor-default">
+                <div className="text-6xl lg:text-7xl font-bold text-slate-900 mb-4 tracking-tighter transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(79,70,229,0.4)] group-hover:-translate-y-2">
+                  100<span className="text-indigo-600">k</span>
+                </div>
+                <div className="text-base lg:text-lg text-slate-500 font-medium transition-colors duration-500 group-hover:text-indigo-600">
+                  חיסכון ממוצע ב-₪
+                </div>
+              </div>
+              <div className="text-center group cursor-default">
+                <div className="text-6xl lg:text-7xl font-bold text-slate-900 mb-4 tracking-tighter transition-all duration-500 group-hover:drop-shadow-[0_0_25px_rgba(79,70,229,0.4)] group-hover:-translate-y-2">
+                  50<span className="text-indigo-600">+</span>
+                </div>
+                <div className="text-base lg:text-lg text-slate-500 font-medium transition-colors duration-500 group-hover:text-indigo-600">
+                  התרעות אוטומטיות
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* The Problem Section - Infinite Marquee with Animated Icons */}
+        <section className="py-32 relative bg-[#FCFCFD] overflow-hidden">
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 mb-20">
+            <div className="max-w-3xl">
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-slate-900 tracking-tight">הכסף נמצא בפרטים הקטנים</h2>
+              <p className="text-xl text-slate-500 font-light leading-relaxed">
+                דליפות כסף יומיומיות אינן נובעות מניהול לקוי, אלא ממורכבות תפעולית. עשרות אלפי שקלים הולכים לאיבוד בשקט, מדי יום.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative group w-full flex gap-8">
+            <div className="absolute inset-y-0 right-0 w-16 md:w-64 bg-gradient-to-l from-[#FCFCFD] to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute inset-y-0 left-0 w-16 md:w-64 bg-gradient-to-r from-[#FCFCFD] to-transparent z-10 pointer-events-none"></div>
+
+            {[1, 2].map((track) => (
+              <div key={track} className="flex gap-8 shrink-0 animate-marquee-rtl" aria-hidden={track === 2}>
+                {[
+                  { icon: Users, anim: "animate-pulse", title: "No-Shows", desc: "אורחים שלא הגיעו והמלון פשוט שכח לחייב על דמי ביטול. כסף שנשאר על הרצפה במקום להכנס לקופה." },
+                  { icon: ShieldAlert, anim: "animate-bell-swing", title: "הנחות לא מאושרות", desc: "הנחות או שדרוגים שניתנים בקבלה ללא אישור מנהל או הצדקה תפעולית, החותכים ישירות בשורת הרווח." },
+                  { icon: Clock, anim: "animate-spin-slow", title: "זמן תגובה ארוך", desc: "בעיות פיננסיות שמתגלות רק בדוחות סוף החודש של הנהלת החשבונות, כאשר כבר מאוחר מדי לתקן." },
+                  { icon: DoorOpen, anim: "animate-float-subtle", title: "עזיבה מאוחרת", desc: "אורחים שנשארו בחדר מעבר לשעת הצ'ק-אאוט הקבועה ולא חויבו בתוספת תשלום כנדרש על פי הנהלים." },
+                  { icon: Percent, anim: "animate-heartbeat", title: "עמלות יתר ל-OTA", desc: "תשלום עמלות עודפות לסוכנים (כמו Booking או Agoda) על הזמנות שבוטלו או קוצרו ברגע האחרון." },
+                  { icon: CreditCard, anim: "animate-pulse", title: "שגיאות סליקה", desc: "כרטיסי אשראי שנדחו, פגו תוקף או חיובים שבוטלו מבלי שהקבלה טיפלה בגבייה חלופית מהאורח." },
+                  { icon: Utensils, anim: "animate-float-subtle", title: "חיובים אבודים ב-F&B", desc: "הזמנות במסעדה, בבר או בשירות החדרים שלא מצאו את דרכן לכרטיס החדר של האורח." },
+                  { icon: Tags, anim: "animate-wiggle", title: "קידוד מחיר שגוי", desc: "הזנת תעריף חברה (Corporate Rate) או קודי הנחה לאורחים פרטיים, מה שחותך בעשרות אחוזים את הרווח." },
+                  { icon: CarFront, anim: "animate-car-move", title: "תוספות נשכחות", desc: "פספוס חיובים יומיים מצטברים על חניון המלון, כניסה לספא, טיפולים או הוספת מיטות לא מדווחות." },
+                  { icon: BedDouble, anim: "animate-float-subtle", title: "שדרוגים 'בחינם'", desc: "מתן חדרים בקטגוריות פרמיום או סוויטות ללא תוספת תשלום (Upsell) וללא אישור מוקדם." },
+                  { icon: UserX, anim: "animate-pulse", title: "פרופילים כפולים", desc: "כפילויות במערכת (PMS) שנועלות חדרים פנויים למכירה ומונעות הזמנות חדשות." }
+                ].map((item, i) => (
+                  <div key={i} className="w-[320px] md:w-[380px] p-8 md:p-10 rounded-[2rem] bg-white ring-1 ring-slate-900/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default">
+                    <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-8">
+                      <item.icon className={`w-6 h-6 text-slate-700 ${item.anim}`} />
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-4 tracking-tight">{item.title}</h3>
+                    <p className="text-slate-500 leading-relaxed text-lg font-light">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Features Bento Box */}
+        <section id="features" className="py-32 bg-white relative">
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
+            <div className="max-w-3xl mb-16">
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-slate-900 tracking-tight">שומרת הסף הפיננסית</h2>
+              <p className="text-xl text-slate-500 font-light leading-relaxed">
+                Tinkerbell מנתחת, מכווינה ומצילה את שורת הרווח בזמן אמת. המערכת לא מחליפה את העובדים – היא הופכת אותם למדויקים יותר.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]">
+              <div className="md:col-span-2 row-span-2 rounded-[2.5rem] bg-slate-50 p-10 lg:p-12 flex flex-col relative overflow-hidden group ring-1 ring-slate-900/5">
+                <div className="relative z-10 max-w-lg">
+                  <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8">
+                    <Activity className="w-7 h-7 text-indigo-600 animate-heartbeat" />
+                  </div>
+                  <h3 className="text-4xl font-bold text-slate-900 mb-5 tracking-tight">שליטה מלאה, 24/7</h3>
+                  <p className="text-slate-500 text-xl font-light leading-relaxed">
+                    התרעות חכמות לוואטסאפ ולמייל ברגע שמתרחשת חריגה. אנחנו עוצרים את דליפת הכספים תוך כדי תנועה, לא בדיעבד.
+                  </p>
+                </div>
+
+                <div className="absolute left-10 bottom-0 w-[120%] h-[65%] bg-white rounded-t-3xl shadow-[0_-20px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 px-8 pt-8 flex flex-col transform translate-y-8 group-hover:translate-y-4 transition-transform duration-700 overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-white via-white/80 to-transparent z-10 pointer-events-none"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
+
+                  <div className="flex flex-col animate-chat-vertical">
+                    {[1, 2].map((set) => (
+                      <div key={set} className="flex flex-col gap-4 pb-4">
+                        <div className="self-end bg-indigo-600 text-white py-3 px-6 rounded-2xl rounded-tr-none shadow-sm text-[15px] font-medium w-fit max-w-[85%]">
+                          חדר 304 סומן כאי-הגעה. לחייב את הכרטיס?
+                        </div>
+                        <div className="self-start bg-slate-50 text-slate-700 py-3 px-6 rounded-2xl rounded-tl-none ring-1 ring-slate-200 text-[15px] font-medium shadow-sm w-fit max-w-[85%]">
+                          כן, חיוב בוצע בהצלחה (₪1,200).
+                        </div>
+                        <div className="self-end bg-indigo-600 text-white py-3 px-6 rounded-2xl rounded-tr-none shadow-sm text-[15px] font-medium w-fit max-w-[85%]">
+                          זוהתה עזיבה מאוחרת בחדר 112 ללא חיוב.
+                        </div>
+                        <div className="self-start bg-slate-50 text-slate-700 py-3 px-6 rounded-2xl rounded-tl-none ring-1 ring-slate-200 text-[15px] font-medium shadow-sm w-fit max-w-[85%]">
+                          נוספה תוספת חצי יום לחשבון (₪350).
+                        </div>
+                        <div className="self-end bg-indigo-600 text-white py-3 px-6 rounded-2xl rounded-tr-none shadow-sm text-[15px] font-medium w-fit max-w-[85%]">
+                          הנחת צוות (100%) הוזנה בחדר 401. לאשר?
+                        </div>
+                        <div className="self-start bg-slate-50 text-slate-700 py-3 px-6 rounded-2xl rounded-tl-none ring-1 ring-slate-200 text-[15px] font-medium shadow-sm w-fit max-w-[85%]">
+                          לא, נדרש אישור מנכ״ל. ההנחה בוטלה.
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-[2.5rem] bg-slate-50 ring-1 ring-slate-900/5 p-8 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center mb-6 relative">
+                  <Mail className="w-6 h-6 text-slate-700 absolute animate-[mail-closed-fade_3s_ease-in-out_infinite]" />
+                  <MailOpen className="w-6 h-6 text-indigo-600 absolute animate-[mail-open-fade_3s_ease-in-out_infinite]" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight">סיכום מנהלים</h3>
+                <p className="text-slate-500 font-light leading-relaxed text-lg">
+                  "עיתון בוקר" יומי לתיבת המייל שלך עם שורת הרווח שהוצלה, ומה שדורש התערבות.
+                </p>
+              </div>
+
+              <div className="rounded-[2.5rem] bg-slate-50 ring-1 ring-slate-900/5 p-8 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center mb-6">
+                  <Lightbulb className="w-6 h-6 animate-glow-bulb" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight">הדרכה אקטיבית</h3>
+                <p className="text-slate-500 font-light leading-relaxed text-lg">
+                  המערכת מנחה את פקיד הקבלה כיצד לתקן את הטעות תוך כדי עבודה (OJT).
+                </p>
+              </div>
+
+              <div className="md:col-span-2 rounded-[2.5rem] bg-slate-900 text-white p-10 flex flex-col sm:flex-row items-center justify-between gap-12 overflow-hidden relative group">
+                <div className="relative z-10 max-w-md">
+                  <h3 className="text-3xl font-bold mb-4 tracking-tight">חסוך 80% מזמן הניתוח</h3>
+                  <p className="text-slate-400 font-light text-lg">
+                    תפסיק לחפור באקסלים. המערכת מגישה לך את הנתונים החשובים בלבד.
+                  </p>
+                </div>
+                <div className="text-[6rem] lg:text-[7rem] font-bold leading-none tracking-tighter select-none bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-500 to-indigo-600 animate-glow-and-float pr-4">
+                  80%
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section id="how-it-works" className="py-32 bg-[#FCFCFD] border-t border-slate-100">
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-20">
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-slate-900 tracking-tight">3 שלבים פשוטים לרווחיות</h2>
+              <p className="text-xl text-slate-500 font-light">ללא התקנות מורכבות. המערכת מתחברת מאחורי הקלעים ומתחילה לעבוד.</p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-12 relative max-w-6xl mx-auto">
+              <div className="hidden md:block absolute top-[40px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-transparent via-indigo-200 to-transparent z-0"></div>
+              {[
+                { num: "01", title: "התממשקות (API)", desc: "חיבור שקוף וישיר למערכת ה-PMS שלכם. תהליך של מספר דקות ללא שום השבתה של המלון." },
+                { num: "02", title: "התאמה אישית", desc: "סשן קצרצר לבחירת ההתרעות הקריטיות מתוך מאגר של למעלה מ-50 תרחישים עסקיים שונים." },
+                { num: "03", title: "התחלת עבודה", desc: "Tinkerbell מתחילה לסרוק, לנטר ולשלוח התרעות בזמן אמת לצוותים הרלוונטיים." }
+              ].map((step, i) => (
+                <div key={i} className={`relative pt-12 pb-12 px-8 group transition-all duration-500 ${i === 2 ? 'rounded-[2.5rem] ring-4 ring-indigo-500/30 bg-white shadow-2xl shadow-indigo-500/10' : 'rounded-[2.5rem] ring-2 ring-transparent hover:ring-indigo-500/10 hover:bg-white hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-500'}`}>
+                  {i < 2 && (
+                    <div className="hidden md:flex absolute top-2 -left-[3rem] w-[3rem] h-16 items-center justify-center z-10">
+                      <div className="w-10 h-10 bg-white rounded-full ring-4 ring-[#FCFCFD] shadow-sm flex items-center justify-center group-hover:-translate-x-2 transition-transform duration-300">
+                        <ArrowLeft className="w-5 h-5 text-indigo-400" />
+                      </div>
+                    </div>
+                  )}
+                  <div className="w-16 h-16 rounded-2xl bg-white ring-1 ring-slate-200 flex items-center justify-center text-xl font-bold text-slate-900 mx-auto md:mx-0 relative z-20 mb-8 shadow-sm group-hover:shadow-md transition-shadow">
+                    {step.num}
+                  </div>
+                  <div className="text-center md:text-right">
+                    <h3 className="text-2xl font-bold text-slate-900 mb-4 tracking-tight">{step.title}</h3>
+                    <p className="text-slate-500 leading-relaxed font-light text-lg">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TESTIMONIALS */}
+        <section id="testimonials" className="py-32 bg-slate-100">
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 mb-16">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+              <div className="max-w-2xl">
+                <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
+                <p className="text-xl text-slate-500 font-light leading-relaxed">
+                  רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה. הנה מה שיש למנהלים שלהם להגיד אחרי ההטמעה.
+                </p>
+              </div>
+              <button className="flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all">
+                לכל סיפורי הלקוחות <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="relative max-w-[88rem] mx-auto px-6 lg:px-8 pb-[10vh]">
+            <div className="flex flex-col gap-[10vh]">
+              {[
+                {
+                  id: 1,
+                  name: "בת חן ישועה",
+                  role: 'בעלים ומנכ"לית, רשת מלונות מטיילים',
+                  quote: "החיים לפני ואחרי טינקרבל – זה פשוט עולם אחר! המערכת חוסכת לנו אינספור טעויות אנוש יומיומיות. אם אני מבקשת משהו שלא קיים, הצוות שלהם מיד מפתח פיצ'ר בהתאם. זה שירות שמקיף אותנו ונותן מעטפת שלמה.",
+                  img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1600",
+                  stat: "ROI חיובי",
+                  statDesc: "החזר השקעה מלא מהחודש הראשון.",
+                  icon: <TrendingUp className="w-4 h-4 text-indigo-600"/>,
+                  rot: "rotate-[-1deg]"
+                },
+                {
+                  id: 2,
+                  name: "קובי גוטמן",
+                  role: 'סמנכ"ל כספים, מלונות מצודות דויד וממילא',
+                  quote: "הכל מגיע ב-Push, ישירות לידיים שלנו. במקום לחפש איפה הכסף בורח, המערכת דוחפת את ההתרעות הרלוונטיות בזמן אמת. זה חוסך לנו כמות אדירה של שעות עבודה, והכי חשוב - הרבה כסף.",
+                  img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1600",
+                  stat: "0 דליפות",
+                  statDesc: "סגירה הרמטית של טעויות בקבלת המלון.",
+                  icon: <ShieldCheck className="w-4 h-4 text-indigo-600"/>,
+                  rot: "rotate-[1deg]",
+                  reverse: true
+                },
+                {
+                  id: 3,
+                  name: "יעל כהן",
+                  role: "מנהלת רשת אכסניות",
+                  quote: "שמנו סוף לדליפות הקטנות. באכסניה יש המון שירותים נלווים ותחלופה מהירה. טינקרבל עוזרת לנו לוודא שאף אורח לא עוזב בלי לשלם על מגבות, ארוחות או עזיבה מאוחרת. הכל מתועד ונגבה בזמן, בלי הפתעות לחשבונאות.",
+                  img: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1600",
+                  stat: "שליטה בחיובים",
+                  statDesc: "אפס פספוסים של חיובים ותוספות נלוות.",
+                  icon: <PieChart className="w-4 h-4 text-indigo-600"/>,
+                  rot: "rotate-[-1deg]"
+                },
+                {
+                  id: 4,
+                  name: "תומר אזולאי",
+                  role: 'מנכ"ל, מלון בוטיק אורבני',
+                  quote: "מוגש לנו על מגש של כסף. מה שפעם לקח לנו ימים של נבירה בדוחות אקסל מורכבים, היום מונגש לנו בקליק. השקיפות שהמערכת נותנת לכל דרגי הניהול היא פשוט חסרת תקדים בתעשיית המלונאות. מומלץ לכל מלון שרוצה לצמוח.",
+                  img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=1600",
+                  stat: "חיסכון בזמן",
+                  statDesc: "מעבר מדוחות אקסל ארוכים להתרעות ממוקדות.",
+                  icon: <Timer className="w-4 h-4 text-indigo-600"/>,
+                  rot: "rotate-[1deg]",
+                  reverse: true
+                }
+              ].map((card, idx) => (
+                <div key={card.id} className={`sticky w-full bg-white rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] transform ${card.rot} transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]`} style={{ top: `${100 + (idx * 30)}px` }}>
+                  <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                    <div className={`relative h-[300px] lg:h-[450px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group ${card.reverse ? 'order-1 lg:order-2' : ''}`}>
+                      <img src={card.img} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
+                      <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 bg-white/95 backdrop-blur-md p-4 lg:p-5 rounded-2xl shadow-2xl border border-indigo-50 max-w-[200px] transform group-hover:-translate-y-2 transition-transform duration-500">
+                         <div className="flex items-center gap-3 mb-2">
+                           <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">{card.icon}</div>
+                           <span className="text-base font-bold text-slate-900">{card.stat}</span>
+                         </div>
+                         <div className="text-xs text-slate-500 font-medium leading-tight">{card.statDesc}</div>
+                      </div>
+                    </div>
+                    <div className={`p-6 lg:p-10 ${card.reverse ? 'order-2 lg:order-1 lg:pl-0' : 'lg:pr-0'}`}>
+                      <Quote className="w-10 h-10 text-indigo-200 mb-6" />
+                      <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-6 leading-tight tracking-tight">"{card.quote.split('.')[0]}."</h3>
+                      <p className="text-lg text-slate-600 font-light leading-relaxed mb-8">{card.quote.split('.').slice(1).join('.')}</p>
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-lg font-bold text-slate-400">{card.name[0]}</div>
+                        <div>
+                          <div className="font-bold text-slate-900">{card.name}</div>
+                          <div className="text-sm text-slate-500 mt-0.5">{card.role}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="bg-indigo-600 text-white relative py-24 lg:py-32 overflow-hidden z-20">
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,white_1px,transparent_1px)] bg-[length:24px_24px]"></div>
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+            <h2 className="text-5xl lg:text-7xl font-bold mb-8 tracking-tighter">הגיע הזמן לעצור את ההפסדים</h2>
+            <p className="text-2xl text-indigo-100 mb-12 font-light max-w-2xl mx-auto">הצטרפו לחודש ניסיון חינם וגלו כמה כסף המלון שלכם באמת יכול להרוויח מנתונים קיימים.</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="bg-white text-indigo-900 px-10 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-xl shadow-indigo-900/20">התחילו חודש ניסיון</button>
+              <button className="bg-indigo-700 text-white px-10 py-5 rounded-full text-lg font-bold hover:bg-indigo-800 transition-colors border border-indigo-500">דברו עם הצוות</button>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="bg-slate-900 text-slate-300 pt-20 pb-10 z-20 relative">
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
+            <div className="grid md:grid-cols-12 gap-12 mb-16">
+              <div className="md:col-span-5">
+                <span className="text-2xl font-bold tracking-tight text-white mb-6 block">Tinkerbell.</span>
+                <p className="text-slate-400 text-lg font-light max-w-sm">טכנולוגיית AI לבקרה פיננסית. אנחנו הופכים דאטה מלונאי לרווחים מיידיים. עובד בשבילך, מסביב לשעון.</p>
+              </div>
+              <div className="md:col-span-2">
+                <h4 className="font-semibold text-white mb-6">המוצר</h4>
+                <ul className="space-y-4 text-slate-400 font-light">
+                  <li><a href="#" className="hover:text-indigo-400 transition-colors">פיצ'רים מרכזיים</a></li>
+                  <li><a href="#" className="hover:text-indigo-400 transition-colors">איך זה עובד</a></li>
+                  <li><a href="#" className="hover:text-indigo-400 transition-colors">אבטחת מידע</a></li>
+                </ul>
+              </div>
+              <div className="md:col-span-2">
+                <h4 className="font-semibold text-white mb-6">חברה</h4>
+                <ul className="space-y-4 text-slate-400 font-light">
+                  <li><a href="#" className="hover:text-indigo-400 transition-colors">אודות הצוות</a></li>
+                  <li><a href="#" className="hover:text-indigo-400 transition-colors">לקוחות מספרים</a></li>
+                  <li><a href="#" className="hover:text-indigo-400 transition-colors">יצירת קשר</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 font-light">
+              <div>© {new Date().getFullYear()} Tinkerbell. כל הזכויות שמורות.</div>
+              <div className="flex gap-6">
+                <a href="#" className="hover:text-white transition-colors">תנאי שימוש</a>
+                <a href="#" className="hover:text-white transition-colors">מדיניות פרטיות</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </main>
+    </div>
+  );
+}

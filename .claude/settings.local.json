@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(where npm:*)",
+      "Bash(cmd.exe /c \"where npm\")",
+      "Read(//c/Program Files/**)",
+      "Bash(command -v node)",
+      "Bash(command -v npx)",
+      "Bash(command -v pnpm)",
+      "Bash(command -v yarn)",
+      "Bash(command -v bun)",
+      "Bash(echo $PATH)",
+      "Bash(command -v winget)",
+      "Bash(cmd.exe /c \"where winget\")",
+      "Bash(winget install:*)",
+      "Bash(export PATH=\"/c/Users/User/nodejs-portable/node-v22.16.0-win-x64:$PATH\")",
+      "Bash(npm install:*)",
+      "Bash(npx vite:*)",
+      "Bash(node -e \":*)"
+    ]
+  }
+}
