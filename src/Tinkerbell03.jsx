@@ -838,7 +838,7 @@ export default function App() {
 
         {/* TESTIMONIAL 1 */}
         <section id="testimonials" className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:80, overflow:'hidden'}}>
-          <div className="h-full flex flex-col justify-center px-6 lg:px-8 -translate-y-16">
+          <div className="h-full flex flex-col justify-center px-6 lg:px-8 -translate-y-28">
             <div className="max-w-2xl mx-auto text-center mb-10">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-3 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
               <p className="text-lg text-slate-500 font-light">רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה.</p>
@@ -870,7 +870,7 @@ export default function App() {
 
         {/* TESTIMONIAL 2 */}
         <section className="rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:81, overflow:'hidden', background:'transparent'}}>
-          <div className="h-full flex flex-col justify-center px-6 lg:px-8">
+          <div className="h-full flex flex-col justify-center px-6 lg:px-8 -translate-y-16">
             <div className="max-w-[88rem] mx-auto w-full">
               <div className="w-full bg-white rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
@@ -921,7 +921,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-24">
               <button className="flex items-center gap-2 text-[#9780ED] font-semibold hover:gap-3 transition-all">
                 לכל סיפורי הלקוחות <ChevronRight className="w-4 h-4" />
               </button>
@@ -929,8 +929,11 @@ export default function App() {
           </div>
         </section>
 
+        {/* CTA + Footer wrapper — rise together as one card */}
+        <div style={{position:'sticky', top:0, zIndex:90}}>
+
         {/* CTA Section */}
-        <section className="bg-[#3D1E87] text-white overflow-hidden" style={{position:'sticky', top:0, height:'100vh', zIndex:90}}>
+        <section className="bg-[#3D1E87] text-white overflow-hidden" style={{height:'100vh'}}>
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
           <div className="h-full flex flex-col items-center justify-center relative z-10 text-center px-6 lg:px-8 pb-56">
             <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
@@ -942,11 +945,11 @@ export default function App() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-slate-900 text-slate-300 pt-20 pb-10" style={{position:'sticky', top:0, zIndex:96}}>
+        <footer className="bg-slate-900 text-slate-300 pt-20 pb-10">
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
             <div className="grid md:grid-cols-12 gap-12 mb-16">
               <div className="md:col-span-5">
-                <span className="text-2xl font-bold tracking-tight text-white mb-6 block">Tinkerbell.</span>
+                <img src="\logo-tinkerbell.png" alt="Tinkerbell" className="h-10 w-auto mb-6 brightness-0 invert" />
                 <p className="text-slate-400 text-lg font-light max-w-sm">טכנולוגיית AI לבקרה פיננסית. אנחנו הופכים דאטה מלונאי לרווחים מיידיים. עובד בשבילך, מסביב לשעון.</p>
               </div>
               <div className="md:col-span-2">
@@ -975,6 +978,7 @@ export default function App() {
             </div>
           </div>
         </footer>
+        </div>{/* end CTA+Footer sticky wrapper */}
       </main>
     </div>
   );
