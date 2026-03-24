@@ -677,7 +677,7 @@ export default function App() {
                 { icon: BarChart3, title: 'ארכיטקטורה מודולרית וסקלאבילית', desc: 'תשתית מתקדמת לעיבוד נתונים בזמן אמת וניטור תהליכים.' },
                 { icon: ShieldCheck, title: 'אבטחת מידע ברמה ארגונית', desc: 'עמידה בתקנים מחמירים, כולל הסמכות ISO27001 / SOC2.' },
               ].map((item, i) => (
-                <div key={i} className="rounded-[2rem] bg-white/85 backdrop-blur-md ring-1 ring-white/60 p-10 flex gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 shadow-sm">
+                <div key={i} className="rounded-[2rem] bg-white/70 backdrop-blur-md ring-1 ring-white/60 p-10 flex gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 shadow-sm">
                   <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0">
                     <item.icon className="w-6 h-6 text-[#9780ED]" />
                   </div>
