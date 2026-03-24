@@ -930,7 +930,7 @@ export default function App() {
         </section>
 
         {/* CTA + Footer — unified sticky section */}
-        <section className="text-white relative overflow-hidden" style={{position:'sticky', top:0, zIndex:90}}>
+        <section className="text-white relative overflow-hidden" style={{position:'sticky', top:0, zIndex:90, minHeight:'100vh'}}>
           <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, #9780ED 0%, #3D1E87 20%, #1a0d4a 38%, #0f172a 52%)'}}></div>
           <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 lg:px-8 pt-24 pb-20">
             <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
