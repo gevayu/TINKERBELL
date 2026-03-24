@@ -8,10 +8,10 @@ export const AuroraBackground = ({
   ...props
 }) => {
   return (
-    <div>
+    <div className="h-full">
       <div
         className={cn(
-          "relative flex flex-col h-[100vh] items-center justify-center bg-zinc-50 text-slate-950 transition-bg",
+          "relative flex flex-col h-full items-center justify-center bg-zinc-50 text-slate-950 transition-bg",
           className
         )}
         {...props}

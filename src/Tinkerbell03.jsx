@@ -322,8 +322,8 @@ export default function App() {
         <AuroraBackground className="h-full bg-transparent items-start justify-start pt-24 pb-0">
         <section className="relative w-full h-full overflow-hidden">
 
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 relative z-10 w-full">
-            <div className="grid lg:grid-cols-12 gap-16 items-center">
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 relative z-10 w-full h-full">
+            <div className="grid lg:grid-cols-12 gap-16 items-center h-full">
 
               <div className="lg:col-span-7">
 
