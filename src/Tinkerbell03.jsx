@@ -75,6 +75,28 @@ export default function App() {
   const [accumulatedAmount, setAccumulatedAmount] = useState(245081);
   const [alertIndex, setAlertIndex] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
+  const isScrollingRef = React.useRef(false);
+
+  // easeInOutCubic smooth scroll
+  const smoothScrollTo = React.useCallback((targetY, duration = 900) => {
+    const startY = window.scrollY;
+    const diff = targetY - startY;
+    if (Math.abs(diff) < 2) return;
+    const startTime = performance.now();
+    const ease = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
+    isScrollingRef.current = true;
+    const step = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, startY + diff * ease(progress));
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        setTimeout(() => { isScrollingRef.current = false; }, 50);
+      }
+    };
+    requestAnimationFrame(step);
+  }, []);
 
   // התרעות מעורבות - קריטיות וחיוביות
   const alerts = [
@@ -93,6 +115,19 @@ export default function App() {
     };
     window.addEventListener('scroll', handleScroll);
 
+    // wheel-based section snapping with easeInOutCubic
+    let wheelTimeout = null;
+    const handleWheel = (e) => {
+      if (isScrollingRef.current) { e.preventDefault(); return; }
+      e.preventDefault();
+      const currentSec = Math.round(window.scrollY / window.innerHeight);
+      const next = e.deltaY > 0
+        ? Math.min(9, currentSec + 1)
+        : Math.max(0, currentSec - 1);
+      smoothScrollTo(next * window.innerHeight, 900);
+    };
+    window.addEventListener('wheel', handleWheel, { passive: false });
+
     const counterInterval = setInterval(() => {
       const addition = Math.floor(Math.random() * 40) + 10;
       setAccumulatedAmount(prev => prev + addition);
@@ -104,10 +139,11 @@ export default function App() {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('wheel', handleWheel);
       clearInterval(counterInterval);
       clearInterval(alertInterval);
     };
-  }, []);
+  }, [smoothScrollTo]);
 
   const currentAlert = alerts[alertIndex];
 
@@ -328,7 +364,7 @@ export default function App() {
         {['Hero','בעיה','ROI','שינוי','איך עובד','טכנולוגיה','פיצ\'רים','לקוח 1','לקוח 2','לקוח 3'].map((label, i) => (
           <button
             key={i}
-            onClick={() => window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' })}
+            onClick={() => smoothScrollTo(i * window.innerHeight, 900)}
             title={label}
             className="group relative flex items-center"
           >
@@ -512,7 +548,7 @@ export default function App() {
                   { icon: BedDouble, anim: "animate-float-subtle", title: "שדרוגים 'בחינם'", desc: "מתן חדרים בקטגוריות פרמיום או סוויטות ללא תוספת תשלום (Upsell) וללא אישור מוקדם." },
                   { icon: UserX, anim: "animate-pulse", title: "פרופילים כפולים", desc: "כפילויות במערכת (PMS) שנועלות חדרים פנויים למכירה ומונעות הזמנות חדשות." }
                 ].map((item, i) => (
-                  <div key={i} className="w-[320px] md:w-[380px] p-8 md:p-10 rounded-[2rem] bg-white ring-1 ring-slate-900/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right">
+                  <div key={i} dir="rtl" className="w-[320px] md:w-[380px] p-8 md:p-10 rounded-[2rem] bg-white ring-1 ring-slate-900/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right">
                     <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-8 mr-auto">
                       <item.icon className={`w-6 h-6 text-slate-700 ${item.anim}`} />
                     </div>
@@ -564,7 +600,7 @@ export default function App() {
 
             {/* Logo Carousel */}
             <div className="text-center mb-10">
-              <p className="text-base font-semibold text-slate-400 uppercase tracking-[0.2em]">מלונות שכבר עובדים עם טינקרבל מגלים איפה מסתתר הרווח</p>
+              <p className="text-base font-semibold text-slate-400 uppercase tracking-[0.2em]">מלונות שכבר עובדים עם טינקרבל גילו איפה מסתתר הרווח</p>
             </div>
             <div className="relative group overflow-hidden" dir="ltr">
               <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#F8F8F9] to-transparent z-10 pointer-events-none"></div>
@@ -640,7 +676,7 @@ export default function App() {
                 { num: "02", title: "התאמה אישית", desc: "סשן קצרצר לבחירת ההתרעות הקריטיות מתוך מאגר של למעלה מ-50 תרחישים עסקיים שונים." },
                 { num: "03", title: "התחלת עבודה", desc: "Tinkerbell מתחילה לסרוק, לנטר ולשלוח התרעות בזמן אמת לצוותים הרלוונטיים." }
               ].map((step, i) => (
-                <div key={i} className={`relative pt-12 pb-12 px-8 group transition-all duration-500 ${i === 2 ? 'rounded-[2.5rem] ring-4 ring-[#9780ED]/30 hover:ring-8 bg-white/60 shadow-2xl shadow-[#9780ED]/10 hover:shadow-2xl hover:shadow-[#9780ED]/20 backdrop-blur-sm transition-all duration-300' : 'rounded-[2.5rem] ring-2 ring-white/50 bg-white/75 backdrop-blur-sm hover:bg-white/90 hover:ring-[#9780ED]/20 hover:shadow-xl transition-all duration-500'}`}>
+                <div key={i} className={`relative pt-12 pb-12 px-8 group transition-all duration-500 ${i === 2 ? 'rounded-[2.5rem] ring-4 ring-[#9780ED]/30 hover:ring-8 bg-white/80 shadow-2xl shadow-[#9780ED]/10 hover:shadow-2xl hover:shadow-[#9780ED]/20 backdrop-blur-sm transition-all duration-300' : 'rounded-[2.5rem] ring-2 ring-white/50 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:ring-[#9780ED]/20 hover:shadow-xl transition-all duration-500'}`}>
                   {i < 2 && (
                     <div className="hidden md:flex absolute top-2 -left-[3rem] w-[3rem] h-16 items-center justify-center z-10">
                       <div className="w-10 h-10 bg-white rounded-full ring-4 ring-[#FCFCFD] shadow-sm flex items-center justify-center animate-bounce-x">
@@ -893,9 +929,9 @@ export default function App() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-[#3D1E87] text-white relative overflow-hidden" style={{position:'relative', zIndex:95}}>
+        <section className="bg-[#3D1E87] text-white overflow-hidden" style={{position:'sticky', top:0, height:'100vh', zIndex:90}}>
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
-          <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10 text-center py-20">
+          <div className="h-full flex flex-col items-center justify-center relative z-10 text-center px-6 lg:px-8">
             <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
             <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
