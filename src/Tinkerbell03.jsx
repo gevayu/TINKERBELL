@@ -933,9 +933,13 @@ export default function App() {
         <div style={{position:'sticky', top:0, zIndex:90}}>
 
         {/* CTA Section */}
-        <section className="bg-[#3D1E87] text-white overflow-hidden" style={{height:'100vh'}}>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
-          <div className="h-full flex flex-col items-center justify-center relative z-10 text-center px-6 lg:px-8 pb-56">
+        <section className="overflow-hidden" style={{height:'100vh'}}>
+          {/* purple background fixed within wrapper */}
+          <div className="absolute top-0 left-0 right-0 h-screen bg-[#3D1E87]" style={{zIndex:0}}>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
+          </div>
+          {/* content stays sticky so footer scrolls over it without moving the text */}
+          <div className="sticky top-0 h-screen flex flex-col items-center justify-center text-white text-center px-6 lg:px-8 pb-56" style={{zIndex:1}}>
             <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
             <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
