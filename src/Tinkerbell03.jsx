@@ -89,7 +89,7 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
-      setActiveSection(Math.min(8, Math.floor(window.scrollY / window.innerHeight)));
+      setActiveSection(Math.min(9, Math.floor(window.scrollY / window.innerHeight)));
     };
     window.addEventListener('scroll', handleScroll);
 
@@ -325,7 +325,7 @@ export default function App() {
 
       {/* Section Nav Dots */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2 z-[100] flex flex-col gap-3">
-        {['Hero','בעיה','ROI','שינוי','איך עובד','טכנולוגיה','פיצ\'רים','לקוחות','CTA'].map((label, i) => (
+        {['Hero','בעיה','ROI','שינוי','איך עובד','טכנולוגיה','פיצ\'רים','לקוח 1','לקוח 2','לקוח 3'].map((label, i) => (
           <button
             key={i}
             onClick={() => window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' })}
@@ -664,7 +664,7 @@ export default function App() {
 
         {/* Technology Section */}
         <section className="bg-[#F8F8F9] rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:60, overflow:'hidden'}}>
-          <img src="/backgrounds/freepik__-__34843.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(0.5)', opacity:0.5}} />
+          <img src="/backgrounds/freepik__-__34843.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(1.3) saturate(0.4)', opacity:0.5}} />
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative" style={{zIndex:1}}>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight mb-4">הטכנולוגיה מאחורי טינקרבל</h2>
@@ -799,97 +799,96 @@ export default function App() {
           </div>
         </section>
 
-        {/* TESTIMONIALS */}
+        {/* TESTIMONIAL 1 */}
         <section id="testimonials" className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:80, overflow:'hidden'}}>
-          <div className="h-full flex flex-col">
-            <div className="max-w-[88rem] mx-auto px-6 lg:px-8 pt-12 pb-8 w-full">
-              <div className="max-w-2xl mx-auto text-center">
-                <h2 className="text-4xl lg:text-5xl font-semibold mb-4 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
-                <p className="text-xl text-slate-500 font-light leading-relaxed">
-                  רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה. הנה מה שיש למנהלים שלהם להגיד אחרי ההטמעה.
-                </p>
-              </div>
+          <div className="h-full flex flex-col justify-center px-6 lg:px-8">
+            <div className="max-w-2xl mx-auto text-center mb-10">
+              <h2 className="text-4xl lg:text-5xl font-semibold mb-3 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
+              <p className="text-lg text-slate-500 font-light">רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה.</p>
             </div>
-
-          <div className="flex-1 overflow-y-auto">
-          <div className="relative max-w-[88rem] mx-auto px-6 lg:px-8 pb-4">
-            <div className="flex flex-col gap-8">
-              {[
-                {
-                  id: 1,
-                  name: "בת חן ישועה",
-                  role: 'בעלים ומנכ"לית, רשת מלונות מטיילים',
-                  photo: "/partners/בת חן.jpg",
-                  quote: "כשאתה מנהל רשת מלונות מרחוק, אתה צריך מערכת שקופה לחלוטין - החיים לפני ואחרי טינקרבל זה עולם אחר.",
-                  img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1600",
-                  stat: "ROI חיובי",
-                  statDesc: "החזר השקעה מלא מהחודש הראשון.",
-                  icon: <TrendingUp className="w-4 h-4 text-[#9780ED]"/>,
-                  rot: "rotate-[-1deg]"
-                },
-                {
-                  id: 2,
-                  name: "קובי גוטמן",
-                  role: 'סמנכ"ל כספים, מלונות מצודות דויד וממילא',
-                  photo: "/partners/קובי.jpg",
-                  quote: "טינקרבל הפכה חלום למציאות! אם עד כה בזבזנו שעות ע\"ג שעות בחיפוש נתונים, היא מראה לנו את כל הנתונים הנחוצים בזמן אמת, וחוסכת לנו בזבוז זמן ואנרגיה מיותרים.",
-                  img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1600",
-                  stat: "0 דליפות",
-                  statDesc: "סגירה הרמטית של טעויות בקבלת המלון.",
-                  icon: <ShieldCheck className="w-4 h-4 text-[#9780ED]"/>,
-                  rot: "rotate-[1deg]",
-                  reverse: true
-                },
-                {
-                  id: 3,
-                  name: "רן אמיגה",
-                  role: 'סמנכ"ל חדשנות וטכנולוגיה, אגודת אכסניות הנוער בישראל אנ"א',
-                  photo: "/partners/רן.jpg",
-                  quote: "טינקרבל מציבה למנהל את כל הכשלים מול העיניים, ונותנת שליטה שלא הייתה לנו קודם.",
-                  img: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1600",
-                  stat: "שליטה בחיובים",
-                  statDesc: "אפס פספוסים של חיובים ותוספות נלוות.",
-                  icon: <PieChart className="w-4 h-4 text-[#9780ED]"/>,
-                  rot: "rotate-[-1deg]"
-                },
-              ].map((card, idx) => (
-                <div key={card.id} className={`sticky w-full bg-white rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] transform ${card.rot} transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]`} style={{ top: `${100 + (idx * 30)}px` }}>
-                  <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                    <div className={`relative h-[300px] lg:h-[450px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group ${card.reverse ? 'order-1 lg:order-2' : ''}`}>
-                      <img src={card.img} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
-                      <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 bg-white/95 backdrop-blur-md p-4 lg:p-5 rounded-2xl shadow-2xl border border-[#F8F6FE] max-w-[200px] transform group-hover:-translate-y-2 transition-transform duration-500">
-                         <div className="flex items-center gap-3 mb-2">
-                           <div className="w-8 h-8 rounded-lg bg-[#F8F6FE] flex items-center justify-center">{card.icon}</div>
-                           <span className="text-base font-bold text-slate-900">{card.stat}</span>
-                         </div>
-                         <div className="text-xs text-slate-500 font-medium leading-tight">{card.statDesc}</div>
-                      </div>
+            <div className="max-w-[88rem] mx-auto w-full">
+              <div className="w-full bg-white rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[-1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                  <div className="relative h-[220px] lg:h-[340px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group">
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1600" alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
+                    <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-[#F8F6FE] max-w-[180px] group-hover:-translate-y-2 transition-transform duration-500">
+                      <div className="flex items-center gap-3 mb-1"><div className="w-7 h-7 rounded-lg bg-[#F8F6FE] flex items-center justify-center"><TrendingUp className="w-4 h-4 text-[#9780ED]"/></div><span className="text-sm font-bold text-slate-900">ROI חיובי</span></div>
+                      <div className="text-xs text-slate-500 font-medium">החזר השקעה מלא מהחודש הראשון.</div>
                     </div>
-                    <div className={`p-6 lg:p-10 ${card.reverse ? 'order-2 lg:order-1 lg:pl-0' : 'lg:pr-0'}`}>
-                      <Quote className="w-10 h-10 text-[#C4B5F7] mb-6" />
-                      <h3 className="text-2xl lg:text-3xl font-semibold text-slate-900 mb-6 leading-tight tracking-tight">{card.quote}</h3>
-                      <div className="flex items-center gap-4">
-                        <div className="w-20 h-20 rounded-full overflow-hidden border border-slate-200 shrink-0">
-                          {card.photo ? <img src={card.photo} alt={card.name} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-slate-50 flex items-center justify-center text-lg font-bold text-slate-400">{card.name[0]}</div>}
-                        </div>
-                        <div>
-                          <div className="font-bold text-slate-900">{card.name}</div>
-                          <div className="text-sm text-slate-500 mt-0.5">{card.role}</div>
-                        </div>
-                      </div>
+                  </div>
+                  <div className="p-4 lg:p-8 lg:pr-0">
+                    <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
+                    <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">כשאתה מנהל רשת מלונות מרחוק, אתה צריך מערכת שקופה לחלוטין - החיים לפני ואחרי טינקרבל זה עולם אחר.</h3>
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shrink-0"><img src="/partners/בת חן.jpg" alt="בת חן ישועה" className="w-full h-full object-cover" /></div>
+                      <div><div className="font-bold text-slate-900">בת חן ישועה</div><div className="text-sm text-slate-500">בעלים ומנכ"לית, רשת מלונות מטיילים</div></div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-center mt-16">
-              <button className="flex items-center gap-2 text-[#9780ED] font-semibold hover:gap-3 transition-all">
-                לכל סיפורי הלקוחות <ChevronRight className="w-4 h-4" />
-              </button>
+              </div>
             </div>
           </div>
+        </section>
+
+        {/* TESTIMONIAL 2 */}
+        <section className="bg-slate-50 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:81, overflow:'hidden'}}>
+          <div className="h-full flex flex-col justify-center px-6 lg:px-8">
+            <div className="max-w-[88rem] mx-auto w-full">
+              <div className="w-full bg-white rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                  <div className="p-4 lg:p-8 lg:pl-0 order-2 lg:order-1">
+                    <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
+                    <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">טינקרבל הפכה חלום למציאות! אם עד כה בזבזנו שעות ע"ג שעות בחיפוש נתונים, היא מראה לנו את כל הנתונים הנחוצים בזמן אמת, וחוסכת לנו בזבוז זמן ואנרגיה מיותרים.</h3>
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shrink-0"><img src="/partners/קובי.jpg" alt="קובי גוטמן" className="w-full h-full object-cover" /></div>
+                      <div><div className="font-bold text-slate-900">קובי גוטמן</div><div className="text-sm text-slate-500">סמנכ"ל כספים, מלונות מצודות דויד וממילא</div></div>
+                    </div>
+                  </div>
+                  <div className="relative h-[220px] lg:h-[340px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group order-1 lg:order-2">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1600" alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
+                    <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-[#F8F6FE] max-w-[180px] group-hover:-translate-y-2 transition-transform duration-500">
+                      <div className="flex items-center gap-3 mb-1"><div className="w-7 h-7 rounded-lg bg-[#F8F6FE] flex items-center justify-center"><ShieldCheck className="w-4 h-4 text-[#9780ED]"/></div><span className="text-sm font-bold text-slate-900">0 דליפות</span></div>
+                      <div className="text-xs text-slate-500 font-medium">סגירה הרמטית של טעויות בקבלה.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
+
+        {/* TESTIMONIAL 3 */}
+        <section className="bg-white rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:82, overflow:'hidden'}}>
+          <div className="h-full flex flex-col justify-center px-6 lg:px-8">
+            <div className="max-w-[88rem] mx-auto w-full">
+              <div className="w-full bg-slate-50 rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[-1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                  <div className="relative h-[220px] lg:h-[340px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group">
+                    <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1600" alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
+                    <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-[#F8F6FE] max-w-[180px] group-hover:-translate-y-2 transition-transform duration-500">
+                      <div className="flex items-center gap-3 mb-1"><div className="w-7 h-7 rounded-lg bg-[#F8F6FE] flex items-center justify-center"><PieChart className="w-4 h-4 text-[#9780ED]"/></div><span className="text-sm font-bold text-slate-900">שליטה בחיובים</span></div>
+                      <div className="text-xs text-slate-500 font-medium">אפס פספוסים של חיובים ותוספות.</div>
+                    </div>
+                  </div>
+                  <div className="p-4 lg:p-8 lg:pr-0">
+                    <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
+                    <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">טינקרבל מציבה למנהל את כל הכשלים מול העיניים, ונותנת שליטה שלא הייתה לנו קודם.</h3>
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shrink-0"><img src="/partners/רן.jpg" alt="רן אמיגה" className="w-full h-full object-cover" /></div>
+                      <div><div className="font-bold text-slate-900">רן אמיגה</div><div className="text-sm text-slate-500">סמנכ"ל חדשנות וטכנולוגיה, אגודת אכסניות הנוער בישראל אנ"א</div></div>
+                    </div>
+                    <div className="flex justify-center mt-10">
+                      <button className="flex items-center gap-2 text-[#9780ED] font-semibold hover:gap-3 transition-all">
+                        לכל סיפורי הלקוחות <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
