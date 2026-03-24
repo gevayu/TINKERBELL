@@ -610,7 +610,7 @@ export default function App() {
                 { before: 'לא עוד דוחות בדיעבד', after: 'שליטה ריל טיים ברווחיות' },
                 { before: 'מחיפוש וגילוי מאוחר', after: 'לכלי עבודה למצויינות תפעולית' },
               ].map((item, i) => (
-                <div key={i} className="group rounded-[2rem] bg-slate-50 ring-1 ring-slate-900/5 p-10 flex flex-col items-center gap-6 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+                <div key={i} className="group rounded-[2rem] bg-white/85 backdrop-blur-sm ring-1 ring-slate-900/5 p-10 flex flex-col items-center gap-6 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
                   <p className="text-xl font-semibold text-slate-500 leading-snug">{item.before}</p>
                   <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#9780ED]/10 animate-float-subtle" style={{animationDuration: '1.2s'}}>
                     <ArrowLeft className="w-5 h-5 text-[#9780ED] -rotate-90" />
