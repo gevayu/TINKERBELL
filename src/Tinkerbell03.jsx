@@ -664,7 +664,8 @@ export default function App() {
 
         {/* Technology Section */}
         <section className="bg-[#F8F8F9] rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:60, overflow:'hidden'}}>
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center">
+          <img src="/backgrounds/freepik__-__34843.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(0.5)', opacity:0.15}} />
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative" style={{zIndex:1}}>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight mb-4">הטכנולוגיה מאחורי טינקרבל</h2>
               <p className="text-xl text-slate-500 font-light leading-relaxed">מערכת AI ייעודית לעולם המלונאות, המשלבת מודלים מתקדמים של בינה מלאכותית עם מתודולוגיות בקרה וניסיון מקצועי רב-שנים.</p>
