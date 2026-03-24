@@ -111,18 +111,19 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
-      setActiveSection(Math.min(9, Math.floor(window.scrollY / window.innerHeight)));
+      setActiveSection(Math.min(10, Math.floor(window.scrollY / window.innerHeight)));
     };
     window.addEventListener('scroll', handleScroll);
 
-    // wheel-based section snapping with easeInOutCubic
-    let wheelTimeout = null;
+    // wheel-based section snapping with easeInOutSine
     const handleWheel = (e) => {
       if (isScrollingRef.current) { e.preventDefault(); return; }
-      e.preventDefault();
       const currentSec = Math.round(window.scrollY / window.innerHeight);
+      // past CTA (section 10) scrolling down → let natural scroll reveal footer
+      if (currentSec >= 10 && e.deltaY > 0) return;
+      e.preventDefault();
       const next = e.deltaY > 0
-        ? Math.min(9, currentSec + 1)
+        ? Math.min(10, currentSec + 1)
         : Math.max(0, currentSec - 1);
       smoothScrollTo(next * window.innerHeight, 900);
     };
@@ -931,7 +932,7 @@ export default function App() {
         {/* CTA Section */}
         <section className="bg-[#3D1E87] text-white overflow-hidden" style={{position:'sticky', top:0, height:'100vh', zIndex:90}}>
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
-          <div className="h-full flex flex-col items-center justify-center relative z-10 text-center px-6 lg:px-8">
+          <div className="h-full flex flex-col items-center justify-center relative z-10 text-center px-6 lg:px-8 pb-32">
             <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
             <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
