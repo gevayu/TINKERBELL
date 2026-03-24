@@ -74,6 +74,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [accumulatedAmount, setAccumulatedAmount] = useState(245081);
   const [alertIndex, setAlertIndex] = useState(0);
+  const [activeSection, setActiveSection] = useState(0);
 
   // התרעות מעורבות - קריטיות וחיוביות
   const alerts = [
@@ -88,6 +89,7 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+      setActiveSection(Math.min(8, Math.floor(window.scrollY / window.innerHeight)));
     };
     window.addEventListener('scroll', handleScroll);
 
@@ -320,6 +322,21 @@ export default function App() {
           </div>
         </div>
       </nav>
+
+      {/* Section Nav Dots */}
+      <div className="fixed left-4 top-1/2 -translate-y-1/2 z-[100] flex flex-col gap-3">
+        {['Hero','בעיה','ROI','שינוי','איך עובד','טכנולוגיה','פיצ\'רים','לקוחות','CTA'].map((label, i) => (
+          <button
+            key={i}
+            onClick={() => window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' })}
+            title={label}
+            className="group relative flex items-center"
+          >
+            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSection === i ? 'bg-[#5B2DC1] scale-150' : 'bg-slate-300 hover:bg-slate-500'}`} />
+            <span className="absolute right-5 text-xs font-medium text-slate-600 bg-white/90 px-2 py-0.5 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">{label}</span>
+          </button>
+        ))}
+      </div>
 
       <main className="relative w-full">
 
@@ -582,7 +599,7 @@ export default function App() {
 
         {/* Transformation Section */}
         <section className="bg-white rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:40, overflow:'hidden'}}>
-          <img src="/backgrounds/freepik__talk__38021.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(1.6) saturate(0.4) opacity(0.18)'}} />
+          <img src="/backgrounds/freepik__talk__38021.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(1.1) saturate(0.3)', opacity: 0.1}} />
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative" style={{zIndex:1}}>
             <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight mb-16 text-center">
               טינקרבל – שומרת הסף הפיננסית של המלון
@@ -623,7 +640,7 @@ export default function App() {
                 { num: "02", title: "התאמה אישית", desc: "סשן קצרצר לבחירת ההתרעות הקריטיות מתוך מאגר של למעלה מ-50 תרחישים עסקיים שונים." },
                 { num: "03", title: "התחלת עבודה", desc: "Tinkerbell מתחילה לסרוק, לנטר ולשלוח התרעות בזמן אמת לצוותים הרלוונטיים." }
               ].map((step, i) => (
-                <div key={i} className={`relative pt-12 pb-12 px-8 group transition-all duration-500 ${i === 2 ? 'rounded-[2.5rem] ring-4 ring-[#9780ED]/30 hover:ring-8 bg-white/60 shadow-2xl shadow-[#9780ED]/10 hover:shadow-2xl hover:shadow-[#9780ED]/20 backdrop-blur-sm transition-all duration-300' : 'rounded-[2.5rem] ring-2 ring-white/30 bg-white/20 backdrop-blur-sm hover:bg-white/50 hover:ring-[#9780ED]/10 hover:shadow-xl transition-all duration-500'}`}>
+                <div key={i} className={`relative pt-12 pb-12 px-8 group transition-all duration-500 ${i === 2 ? 'rounded-[2.5rem] ring-4 ring-[#9780ED]/30 hover:ring-8 bg-white/60 shadow-2xl shadow-[#9780ED]/10 hover:shadow-2xl hover:shadow-[#9780ED]/20 backdrop-blur-sm transition-all duration-300' : 'rounded-[2.5rem] ring-2 ring-white/50 bg-white/75 backdrop-blur-sm hover:bg-white/90 hover:ring-[#9780ED]/20 hover:shadow-xl transition-all duration-500'}`}>
                   {i < 2 && (
                     <div className="hidden md:flex absolute top-2 -left-[3rem] w-[3rem] h-16 items-center justify-center z-10">
                       <div className="w-10 h-10 bg-white rounded-full ring-4 ring-[#FCFCFD] shadow-sm flex items-center justify-center animate-bounce-x">
