@@ -324,7 +324,7 @@ export default function App() {
       </nav>
 
       {/* Section Nav Dots */}
-      <div className="fixed left-4 top-1/2 -translate-y-1/2 z-[100] flex flex-col gap-3">
+      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-[100] flex flex-col gap-3">
         {['Hero','בעיה','ROI','שינוי','איך עובד','טכנולוגיה','פיצ\'רים','לקוחות','CTA'].map((label, i) => (
           <button
             key={i}
@@ -332,8 +332,8 @@ export default function App() {
             title={label}
             className="group relative flex items-center"
           >
-            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSection === i ? 'bg-[#5B2DC1] scale-150' : 'bg-slate-300 hover:bg-slate-500'}`} />
-            <span className="absolute right-5 text-xs font-medium text-slate-600 bg-white/90 px-2 py-0.5 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">{label}</span>
+            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSection === i ? 'bg-[#5B2DC1] scale-150' : 'bg-slate-500 hover:bg-slate-700'}`} />
+            <span className="absolute left-5 text-xs font-medium text-slate-600 bg-white/90 px-2 py-0.5 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">{label}</span>
           </button>
         ))}
       </div>
