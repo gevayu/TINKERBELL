@@ -298,7 +298,7 @@ export default function App() {
       `}} />
 
       {/* Floating Pill Navigation */}
-      <nav className={`fixed left-0 right-0 z-[100] transition-all duration-300 ${scrolled ? 'top-2 lg:top-4' : 'top-4 lg:top-8'}`}>
+      <nav className="fixed left-0 right-0 z-[100] top-4 lg:top-6">
         <div className="w-[calc(100%-1rem)] md:w-[calc(100%-3rem)] max-w-[88rem] mx-auto">
           <div className={`flex justify-between items-center h-16 lg:h-20 px-5 lg:px-8 rounded-2xl lg:rounded-[2rem] transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-lg shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-slate-200/60' : 'bg-white/50 backdrop-blur-md border border-white/40 shadow-sm'}`}>
             <div className="flex items-center">
