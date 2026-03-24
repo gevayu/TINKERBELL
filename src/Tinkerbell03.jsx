@@ -599,7 +599,7 @@ export default function App() {
 
         {/* Transformation Section */}
         <section className="bg-white rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:40, overflow:'hidden'}}>
-          <img src="/backgrounds/freepik__talk__38021.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(1.1) saturate(0.3)', opacity: 0.1}} />
+          <img src="/backgrounds/freepik__talk__38021.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(1.1) saturate(0.3)', opacity: 0.5}} />
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative" style={{zIndex:1}}>
             <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight mb-16 text-center">
               טינקרבל – שומרת הסף הפיננסית של המלון
