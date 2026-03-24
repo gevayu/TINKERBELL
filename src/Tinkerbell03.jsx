@@ -801,7 +801,7 @@ export default function App() {
 
         {/* TESTIMONIAL 1 */}
         <section id="testimonials" className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:80, overflow:'hidden'}}>
-          <div className="h-full flex flex-col justify-center px-6 lg:px-8">
+          <div className="h-full flex flex-col justify-center px-6 lg:px-8 -translate-y-16">
             <div className="max-w-2xl mx-auto text-center mb-10">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-3 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
               <p className="text-lg text-slate-500 font-light">רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה.</p>
