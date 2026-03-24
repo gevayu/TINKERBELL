@@ -18,6 +18,7 @@ export default defineConfig({
       input: {
         tinkerbell01: resolve(__dirname, 'tinkerbell01.html'),
         tinkerbell02: resolve(__dirname, 'tinkerbell02.html'),
+        tinkerbell03: resolve(__dirname, 'tinkerbell03.html'),
       },
     },
   },
