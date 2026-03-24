@@ -769,17 +769,19 @@ export default function App() {
 
         {/* TESTIMONIALS */}
         <section id="testimonials" className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:80, overflow:'hidden'}}>
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center">
-            <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
-              <p className="text-xl text-slate-500 font-light leading-relaxed">
-                רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה. הנה מה שיש למנהלים שלהם להגיד אחרי ההטמעה.
-              </p>
+          <div className="h-full flex flex-col">
+            <div className="max-w-[88rem] mx-auto px-6 lg:px-8 pt-12 pb-8 w-full">
+              <div className="max-w-2xl mx-auto text-center">
+                <h2 className="text-4xl lg:text-5xl font-semibold mb-4 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
+                <p className="text-xl text-slate-500 font-light leading-relaxed">
+                  רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה. הנה מה שיש למנהלים שלהם להגיד אחרי ההטמעה.
+                </p>
+              </div>
             </div>
-          </div>
 
+          <div className="flex-1 overflow-y-auto">
           <div className="relative max-w-[88rem] mx-auto px-6 lg:px-8 pb-4">
-            <div className="flex flex-col gap-[10vh]">
+            <div className="flex flex-col gap-8">
               {[
                 {
                   id: 1,
@@ -855,14 +857,16 @@ export default function App() {
               </button>
             </div>
           </div>
+          </div>
+          </div>
         </section>
 
         {/* CTA Section */}
-        <section className="bg-[#3D1E87] text-white relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:90}}>
+        <section className="bg-[#3D1E87] text-white relative overflow-hidden" style={{position:'relative', zIndex:95}}>
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
-          <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10 text-center h-full flex flex-col justify-center">
-            <h2 className="text-5xl lg:text-7xl mb-8 tracking-tighter"><span className="font-light text-4xl lg:text-[3.375rem]">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
-            <p className="text-2xl text-[#EDE8FB] mb-12 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10 text-center py-20">
+            <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
+            <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-white text-[#5B2DC1] px-10 py-5 rounded-full text-lg font-semibold hover:scale-105 transition-transform shadow-xl shadow-[#5B2DC1]/20">התחילו חודש ניסיון</button>
             </div>
@@ -870,7 +874,7 @@ export default function App() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-slate-900 text-slate-300 pt-20 pb-10 z-20 relative">
+        <footer className="bg-slate-900 text-slate-300 pt-20 pb-10 relative" style={{zIndex:95}}>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
             <div className="grid md:grid-cols-12 gap-12 mb-16">
               <div className="md:col-span-5">
