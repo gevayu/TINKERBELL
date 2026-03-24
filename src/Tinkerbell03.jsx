@@ -318,8 +318,9 @@ export default function App() {
       <main className="relative w-full">
 
         {/* Hero Section */}
-        <AuroraBackground className="h-auto pt-32 pb-8 lg:pt-48 lg:pb-16 bg-transparent items-start justify-start">
-        <section className="relative w-full overflow-x-clip">
+        <div style={{position:'sticky', top:0, height:'100vh', zIndex:10, overflow:'hidden'}}>
+        <AuroraBackground className="h-full bg-transparent items-start justify-start pt-24 pb-0">
+        <section className="relative w-full h-full overflow-hidden">
 
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 relative z-10 w-full">
             <div className="grid lg:grid-cols-12 gap-16 items-center">
@@ -444,10 +445,10 @@ export default function App() {
           </div>
         </section>
         </AuroraBackground>
-
+        </div>
 
         {/* The Problem Section - Infinite Marquee with Animated Icons */}
-        <section className="py-16 relative overflow-hidden">
+        <section className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:20}}>
           <img src="/backgrounds/hammocks-with-palm-trees.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex: 0, filter: 'brightness(1.15)'}} />
           <div className="absolute inset-0 bg-white/80" style={{zIndex: 1}}></div>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 mb-12 relative" style={{zIndex: 2}}>
@@ -509,7 +510,7 @@ export default function App() {
         </section>
 
 {/* ROI Stats Section */}
-        <section className="py-24 bg-[#F8F8F9] border-t border-slate-100">
+        <section className="bg-[#F8F8F9] rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:30, overflow:'hidden'}}>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">חיסכון תפעולי מדיד עם המערכת כבר מהיום הראשון</h2>
@@ -569,7 +570,7 @@ export default function App() {
         </section>
 
         {/* Transformation Section */}
-        <section className="py-24 bg-white border-t border-slate-100">
+        <section className="bg-white rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:40, overflow:'hidden'}}>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
             <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight mb-16 text-center">
               טינקרבל – שומרת הסף הפיננסית של המלון
@@ -593,7 +594,7 @@ export default function App() {
         </section>
 
         {/* How It Works + Technology */}
-        <section id="how-it-works" className="py-16 border-t border-slate-100 relative overflow-hidden">
+        <section id="how-it-works" className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:50}}>
           <img src="/backgrounds/two-beautiful-girls-standing-by-airport.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex: 0}} />
           <div className="absolute inset-0 bg-[#F8F8F9]/75" style={{zIndex: 1}}></div>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 relative" style={{zIndex: 2}}>
@@ -633,7 +634,7 @@ export default function App() {
         </section>
 
         {/* Technology Section */}
-        <section className="py-16 bg-[#F8F8F9] border-t border-slate-100">
+        <section className="bg-[#F8F8F9] rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:60, overflow:'hidden'}}>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8" style={{paddingBottom: '46px'}}>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight mb-4">הטכנולוגיה מאחורי טינקרבל</h2>
@@ -660,7 +661,7 @@ export default function App() {
           </div>
         </section>
         {/* Features Bento Box */}
-        <section id="features" className="py-16 bg-white relative">
+        <section id="features" className="bg-white relative rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:70, overflow:'hidden'}}>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">מה טינקרבל עושה בשטח?</h2>
@@ -769,7 +770,7 @@ export default function App() {
         </section>
 
         {/* TESTIMONIALS */}
-        <section id="testimonials" className="py-32 bg-slate-100">
+        <section id="testimonials" className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:80, overflow:'hidden'}}>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 mb-16">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
@@ -859,7 +860,7 @@ export default function App() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-[#3D1E87] text-white relative py-24 lg:py-32 overflow-hidden z-20">
+        <section className="bg-[#3D1E87] text-white relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:90}}>
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
           <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10 text-center">
             <h2 className="text-5xl lg:text-7xl mb-8 tracking-tighter"><span className="font-light text-4xl lg:text-[3.375rem]">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
