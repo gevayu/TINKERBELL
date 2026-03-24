@@ -451,8 +451,8 @@ export default function App() {
         <section className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:20}}>
           <img src="/backgrounds/hammocks-with-palm-trees.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex: 0, filter: 'brightness(1.15)'}} />
           <div className="absolute inset-0 bg-white/80" style={{zIndex: 1}}></div>
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative" style={{zIndex: 2}}>
-            <div className="max-w-3xl mx-auto text-center">
+          <div className="h-full flex flex-col justify-between py-16 relative" style={{zIndex: 2}}>
+            <div className="max-w-3xl mx-auto text-center px-6 lg:px-8">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">הכסף נמצא בפרטים הקטנים</h2>
               <p className="text-xl text-slate-500 font-light leading-relaxed mb-4">
                 בכל מלון קיימות דליפות כסף יומיומיות.
@@ -461,9 +461,8 @@ export default function App() {
                 לא בגלל ניהול גרוע - אלא בגלל מורכבות תפעולית,<br/>עומס מידע ומחסור בבקרה חכמה בזמן אמת.
               </p>
             </div>
-          </div>
 
-          <div className="relative group w-full overflow-hidden" dir="ltr" style={{zIndex: 2}}>
+          <div className="relative group w-full overflow-hidden" dir="ltr">
             <div className="absolute inset-y-0 right-0 w-16 md:w-64 bg-gradient-to-l from-[#F8F8F9] to-transparent z-10 pointer-events-none"></div>
             <div className="absolute inset-y-0 left-0 w-16 md:w-64 bg-gradient-to-r from-[#F8F8F9] to-transparent z-10 pointer-events-none"></div>
 
@@ -496,8 +495,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 mt-12 relative" style={{zIndex: 2}}>
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="max-w-3xl mx-auto text-center px-6 lg:px-8">
               <p className="text-xl text-slate-700 font-semibold mb-4">
                 התוצאה - איבוד הכנסות ורווח בהיקף משמעותי בין 3–7% מהמחזור.
               </p>
