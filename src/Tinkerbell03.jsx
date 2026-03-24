@@ -929,60 +929,52 @@ export default function App() {
           </div>
         </section>
 
-        {/* CTA + Footer wrapper — rise together as one card */}
-        <div style={{position:'sticky', top:0, zIndex:90}}>
-
-        {/* CTA Section */}
-        <section className="overflow-hidden" style={{height:'100vh'}}>
-          {/* purple background fixed within wrapper */}
-          <div className="absolute top-0 left-0 right-0 h-screen bg-[#3D1E87]" style={{zIndex:0}}>
+        {/* CTA + Footer — unified sticky section */}
+        <section className="text-white relative overflow-hidden" style={{position:'sticky', top:0, zIndex:90}}>
+          <div className="absolute inset-0 bg-[#3D1E87]">
             <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
           </div>
-          {/* content stays sticky so footer scrolls over it without moving the text */}
-          <div className="sticky top-0 h-screen flex flex-col items-center justify-center text-white text-center px-6 lg:px-8 pb-56" style={{zIndex:1}}>
+          <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 lg:px-8 pt-24 pb-20">
             <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
             <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
               <button className="bg-white text-[#5B2DC1] px-10 py-5 rounded-full text-lg font-semibold hover:scale-105 transition-transform shadow-xl shadow-[#5B2DC1]/20">התחילו חודש ניסיון</button>
+            </div>
+
+            {/* Footer content */}
+            <div className="w-full max-w-[88rem] mx-auto border-t border-white/10 pt-16">
+              <div className="grid md:grid-cols-12 gap-12 mb-12 text-right">
+                <div className="md:col-span-5">
+                  <img src="\logo-tinkerbell.png" alt="Tinkerbell" className="h-10 w-auto mb-6 brightness-0 invert" />
+                  <p className="text-white/50 text-lg font-light max-w-sm">טכנולוגיית AI לבקרה פיננסית. אנחנו הופכים דאטה מלונאי לרווחים מיידיים. עובד בשבילך, מסביב לשעון.</p>
+                </div>
+                <div className="md:col-span-2">
+                  <h4 className="font-semibold text-white mb-6">המוצר</h4>
+                  <ul className="space-y-4 text-white/50 font-light">
+                    <li><a href="#" className="hover:text-[#9780ED] transition-colors">פיצ'רים מרכזיים</a></li>
+                    <li><a href="#" className="hover:text-[#9780ED] transition-colors">איך זה עובד</a></li>
+                    <li><a href="#" className="hover:text-[#9780ED] transition-colors">אבטחת מידע</a></li>
+                  </ul>
+                </div>
+                <div className="md:col-span-2">
+                  <h4 className="font-semibold text-white mb-6">חברה</h4>
+                  <ul className="space-y-4 text-white/50 font-light">
+                    <li><a href="#" className="hover:text-[#9780ED] transition-colors">אודות הצוות</a></li>
+                    <li><a href="#" className="hover:text-[#9780ED] transition-colors">לקוחות מספרים</a></li>
+                    <li><a href="#" className="hover:text-[#9780ED] transition-colors">יצירת קשר</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/30 font-light">
+                <div>© {new Date().getFullYear()} Tinkerbell. כל הזכויות שמורות.</div>
+                <div className="flex gap-6">
+                  <a href="#" className="hover:text-white transition-colors">תנאי שימוש</a>
+                  <a href="#" className="hover:text-white transition-colors">מדיניות פרטיות</a>
+                </div>
+              </div>
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="bg-slate-900 text-slate-300 pt-20 pb-10">
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
-            <div className="grid md:grid-cols-12 gap-12 mb-16">
-              <div className="md:col-span-5">
-                <img src="\logo-tinkerbell.png" alt="Tinkerbell" className="h-10 w-auto mb-6 brightness-0 invert" />
-                <p className="text-slate-400 text-lg font-light max-w-sm">טכנולוגיית AI לבקרה פיננסית. אנחנו הופכים דאטה מלונאי לרווחים מיידיים. עובד בשבילך, מסביב לשעון.</p>
-              </div>
-              <div className="md:col-span-2">
-                <h4 className="font-semibold text-white mb-6">המוצר</h4>
-                <ul className="space-y-4 text-slate-400 font-light">
-                  <li><a href="#" className="hover:text-[#9780ED] transition-colors">פיצ'רים מרכזיים</a></li>
-                  <li><a href="#" className="hover:text-[#9780ED] transition-colors">איך זה עובד</a></li>
-                  <li><a href="#" className="hover:text-[#9780ED] transition-colors">אבטחת מידע</a></li>
-                </ul>
-              </div>
-              <div className="md:col-span-2">
-                <h4 className="font-semibold text-white mb-6">חברה</h4>
-                <ul className="space-y-4 text-slate-400 font-light">
-                  <li><a href="#" className="hover:text-[#9780ED] transition-colors">אודות הצוות</a></li>
-                  <li><a href="#" className="hover:text-[#9780ED] transition-colors">לקוחות מספרים</a></li>
-                  <li><a href="#" className="hover:text-[#9780ED] transition-colors">יצירת קשר</a></li>
-                </ul>
-              </div>
-            </div>
-            <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 font-light">
-              <div>© {new Date().getFullYear()} Tinkerbell. כל הזכויות שמורות.</div>
-              <div className="flex gap-6">
-                <a href="#" className="hover:text-white transition-colors">תנאי שימוש</a>
-                <a href="#" className="hover:text-white transition-colors">מדיניות פרטיות</a>
-              </div>
-            </div>
-          </div>
-        </footer>
-        </div>{/* end CTA+Footer sticky wrapper */}
       </main>
     </div>
   );
