@@ -800,7 +800,7 @@ export default function App() {
         </section>
 
         {/* TESTIMONIAL 1 */}
-        <section id="testimonials" className="rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:80, overflow:'hidden', background:'transparent'}}>
+        <section id="testimonials" className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:80, overflow:'hidden'}}>
           <div className="h-full flex flex-col justify-center px-6 lg:px-8">
             <div className="max-w-2xl mx-auto text-center mb-10">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-3 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
