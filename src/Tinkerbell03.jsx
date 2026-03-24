@@ -932,7 +932,7 @@ export default function App() {
         {/* CTA Section */}
         <section className="bg-[#3D1E87] text-white overflow-hidden" style={{position:'sticky', top:0, height:'100vh', zIndex:90}}>
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d4a]/80 via-[#3D1E87]/20 to-[#9780ED]/20"></div>
-          <div className="h-full flex flex-col items-center justify-center relative z-10 text-center px-6 lg:px-8 pb-32">
+          <div className="h-full flex flex-col items-center justify-center relative z-10 text-center px-6 lg:px-8 pb-56">
             <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
             <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -942,7 +942,7 @@ export default function App() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-slate-900 text-slate-300 pt-20 pb-10 relative" style={{zIndex:95}}>
+        <footer className="bg-slate-900 text-slate-300 pt-20 pb-10" style={{position:'sticky', top:0, zIndex:96}}>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8">
             <div className="grid md:grid-cols-12 gap-12 mb-16">
               <div className="md:col-span-5">
