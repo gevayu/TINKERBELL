@@ -932,16 +932,20 @@ export default function App() {
         {/* CTA + Footer — unified sticky section */}
         <section className="text-white relative overflow-hidden" style={{position:'sticky', top:0, zIndex:90, minHeight:'100vh'}}>
           <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, #9780ED 0%, #3D1E87 20%, #1a0d4a 38%, #0f172a 52%)'}}></div>
-          <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 lg:px-8 pt-24 pb-20">
-            <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
-            <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
-              <button className="bg-white text-[#5B2DC1] px-10 py-5 rounded-full text-lg font-semibold hover:scale-105 transition-transform shadow-xl shadow-[#5B2DC1]/20">התחילו חודש ניסיון</button>
+          <div className="relative z-10 min-h-screen flex flex-col px-6 lg:px-8">
+
+            {/* CTA — vertically centered */}
+            <div className="flex-1 flex flex-col items-center justify-center text-center">
+              <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
+              <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button className="bg-white text-[#5B2DC1] px-10 py-5 rounded-full text-lg font-semibold hover:scale-105 transition-transform shadow-xl shadow-[#5B2DC1]/20">התחילו חודש ניסיון</button>
+              </div>
             </div>
 
-            {/* Footer content */}
-            <div className="w-full max-w-[88rem] mx-auto border-t border-white/10 pt-16">
-              <div className="grid md:grid-cols-12 gap-12 mb-12 text-right">
+            {/* Footer — pinned to bottom */}
+            <div className="w-full max-w-[88rem] mx-auto border-t border-white/10 pt-12 pb-10">
+              <div className="grid md:grid-cols-12 gap-12 mb-10 text-right">
                 <div className="md:col-span-5">
                   <img src="\logo-tinkerbell.png" alt="Tinkerbell" className="h-10 w-auto mb-6 brightness-0 invert" />
                   <p className="text-white/50 text-lg font-light max-w-sm">טכנולוגיית AI לבקרה פיננסית. אנחנו הופכים דאטה מלונאי לרווחים מיידיים. עובד בשבילך, מסביב לשעון.</p>
