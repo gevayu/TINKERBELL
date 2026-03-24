@@ -200,6 +200,12 @@ export default function App() {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-5px); }
         }
+        @keyframes scrollDot {
+          0% { transform: translateY(0); opacity: 1; }
+          80% { transform: translateY(14px); opacity: 0; }
+          81% { transform: translateY(0); opacity: 0; }
+          100% { transform: translateY(0); opacity: 1; }
+        }
         .animate-float-subtle {
           animation: float-subtle 3s ease-in-out infinite;
         }
@@ -443,6 +449,13 @@ export default function App() {
 
             </div>
           </div>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 pointer-events-none">
+          <span className="text-xs font-medium text-slate-400 tracking-widest uppercase">גלול</span>
+          <div className="w-6 h-10 rounded-full border-2 border-slate-300 flex items-start justify-center pt-2">
+            <div className="w-1 h-2 bg-slate-400 rounded-full" style={{animation: 'scrollDot 1.6s ease-in-out infinite'}}></div>
+          </div>
+        </div>
         </section>
         </AuroraBackground>
         </div>
