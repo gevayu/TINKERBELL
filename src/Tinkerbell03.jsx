@@ -917,14 +917,14 @@ export default function App() {
                       <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shrink-0"><img src="/partners/רן.jpg" alt="רן אמיגה" className="w-full h-full object-cover" /></div>
                       <div><div className="font-bold text-slate-900">רן אמיגה</div><div className="text-sm text-slate-500">סמנכ"ל חדשנות וטכנולוגיה, אגודת אכסניות הנוער בישראל אנ"א</div></div>
                     </div>
-                    <div className="flex justify-center mt-10">
-                      <button className="flex items-center gap-2 text-[#9780ED] font-semibold hover:gap-3 transition-all">
-                        לכל סיפורי הלקוחות <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="flex justify-center mt-8">
+              <button className="flex items-center gap-2 text-[#9780ED] font-semibold hover:gap-3 transition-all">
+                לכל סיפורי הלקוחות <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </section>
