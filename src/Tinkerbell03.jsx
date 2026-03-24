@@ -451,7 +451,7 @@ export default function App() {
         <section className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:20}}>
           <img src="/backgrounds/hammocks-with-palm-trees.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex: 0, filter: 'brightness(1.15)'}} />
           <div className="absolute inset-0 bg-white/80" style={{zIndex: 1}}></div>
-          <div className="h-full flex flex-col justify-evenly py-8 relative" style={{zIndex: 2}}>
+          <div className="h-full flex flex-col justify-center gap-10 py-8 relative" style={{zIndex: 2}}>
             <div className="max-w-3xl mx-auto text-center px-6 lg:px-8">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">הכסף נמצא בפרטים הקטנים</h2>
               <p className="text-xl text-slate-500 font-light leading-relaxed mb-4">
