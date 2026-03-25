@@ -576,7 +576,7 @@ export default function App() {
 
 {/* ROI Stats Section */}
         <section className="bg-[#F8F8F9] rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:30, overflow:'hidden'}}>
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center">
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center pt-48">
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">חיסכון תפעולי מדיד עם המערכת כבר מהיום הראשון</h2>
               <p className="text-xl text-slate-500 font-light leading-relaxed mb-2">מרווחי הרווח בענף נשחקים. אין יותר מקום לניהול עיוור.</p>
@@ -730,23 +730,23 @@ export default function App() {
         {/* Features Bento Box */}
         <section id="features" className="bg-white relative rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:70, overflow:'hidden'}}>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">מה טינקרבל עושה בשטח?</h2>
-              <p className="text-xl text-slate-500 font-light leading-relaxed mb-2">
+            <div className="max-w-3xl mx-auto text-center mb-6">
+              <h2 className="text-3xl lg:text-4xl font-semibold mb-3 text-slate-900 tracking-tight">מה טינקרבל עושה בשטח?</h2>
+              <p className="text-lg text-slate-500 font-light leading-relaxed mb-1">
                 עוזרת לביקורת תהליכים ולהגדלת רווחיות המלון,
               </p>
-              <p className="text-xl text-slate-700 font-semibold">
+              <p className="text-lg text-slate-700 font-semibold">
                 בלי לחפש. בלי לרדוף. בלי כאב ראש.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[270px]">
-              <div className="md:col-span-2 row-span-2 rounded-[2.5rem] bg-slate-50 p-10 lg:p-12 flex flex-col relative overflow-hidden group ring-1 ring-slate-900/5">
-                <div className="relative z-10 max-w-lg flex items-center gap-5 mb-5 -mt-4">
-                  <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center shrink-0">
-                    <Activity className="w-7 h-7 text-[#9780ED] animate-heartbeat" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[210px]">
+              <div className="md:col-span-2 row-span-2 rounded-[2.5rem] bg-slate-50 p-6 lg:p-8 flex flex-col relative overflow-hidden group ring-1 ring-slate-900/5">
+                <div className="relative z-10 max-w-lg flex items-center gap-4 mb-4">
+                  <div className="w-11 h-11 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0">
+                    <Activity className="w-5 h-5 text-[#9780ED] animate-heartbeat" />
                   </div>
-                  <h3 className="text-4xl font-semibold text-slate-900 tracking-tight">מנתחת נתוני Revenue Leakage בזמן אמת</h3>
+                  <h3 className="text-2xl font-semibold text-slate-900 tracking-tight">מנתחת נתוני Revenue Leakage בזמן אמת</h3>
                 </div>
 
                 <div className="absolute right-0 bottom-0 w-full h-[90%] bg-white rounded-t-3xl shadow-[0_-20px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 px-8 pt-8 flex flex-col transform translate-y-28 group-hover:translate-y-20 transition-transform duration-700 overflow-hidden">
