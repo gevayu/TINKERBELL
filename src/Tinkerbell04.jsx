@@ -80,6 +80,8 @@ export default function App() {
   const [expandedTestimonial, setExpandedTestimonial] = useState(null);
   const isScrollingRef = React.useRef(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [screenshotIndex, setScreenshotIndex] = useState(0);
+  const screenshots = ['/screenshots/1.png', '/screenshots/2.png', '/screenshots/3.png', '/screenshots/4.png', '/screenshots/5.png', '/screenshots/6.png', '/screenshots/7.png'];
   const bulbPos = React.useRef({ x: 0, y: 0 });
   const bulbRef = React.useRef(null);
 
@@ -168,11 +170,16 @@ export default function App() {
       setAlertIndex((prev) => (prev + 1) % alerts.length);
     }, 10000);
 
+    const screenshotInterval = setInterval(() => {
+      setScreenshotIndex((prev) => (prev + 1) % 7);
+    }, 4000);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('wheel', handleWheel);
       clearInterval(counterInterval);
       clearInterval(alertInterval);
+      clearInterval(screenshotInterval);
     };
   }, [smoothScrollTo]);
 
@@ -848,30 +855,41 @@ export default function App() {
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex items-center relative z-10">
             <div className="grid lg:grid-cols-12 gap-12 w-full h-[calc(100%-6rem)]">
 
-              {/* Right — Sticky title + steps */}
-              <div className="lg:col-span-7 flex flex-col justify-center text-right">
-                <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">מה טינקרבל עושה בשטח?</h2>
-                <p className="text-xl text-slate-500 font-light leading-relaxed mb-2">ללא התקנות מורכבות. המערכת מתחברת מאחורי הקלעים ומתחילה לעבוד.</p>
-                <p className="text-2xl font-semibold text-slate-600 mb-8">תוך שעות, לא שבועות</p>
+              {/* Right — Title + Screenshots */}
+              <div className="lg:col-span-7 flex flex-col justify-center text-right gap-8">
+                <div>
+                  <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">מה טינקרבל עושה בשטח?</h2>
+                  <p className="text-xl text-slate-500 font-light leading-relaxed">ככה זה נראה מבפנים</p>
+                </div>
 
-                {/* Steps 1-2-3 horizontal */}
-                <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr_auto] gap-3 items-stretch">
-                  {[
-                    { num: "01", title: "התממשקות (API)", desc: <>חיבור שקוף וישיר למערכת ה-PMS שלכם — <span className="font-semibold text-slate-700">אופטימה של פריוריטי</span> ו-<span className="font-semibold text-slate-700">Oracle OPERA Cloud</span>. תהליך של מס׳ דקות ולא משבית את המלון לרגע.</> },
-                    { num: "02", title: "התאמה אישית", desc: "סשן קצרצר לבחירת ההתרעות הקריטיות מתוך מאגר של למעלה מ-50 תרחישים עסקיים שונים." },
-                    { num: "03", title: "התחלת עבודה", desc: "Tinkerbell מתחילה לסרוק, לנטר ולשלוח התרעות בזמן אמת לצוותים הרלוונטיים." }
-                  ].flatMap((step, i) => [
-                    <div key={`step-${i}`} className="rounded-2xl bg-white/80 ring-1 ring-slate-100 p-4 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 self-stretch">
-                      <div className="w-10 h-10 rounded-xl bg-[#F8F6FE] ring-1 ring-[#9780ED]/20 flex items-center justify-center text-base font-bold text-[#5B2DC1] shrink-0">
-                        {step.num}
-                      </div>
-                      <p className="text-sm font-semibold text-slate-900 leading-snug">{step.title}</p>
-                      <p className="text-xs text-slate-500 font-light leading-relaxed">{step.desc}</p>
-                    </div>,
-                    <div key={`arrow-${i}`} className="w-9 h-9 rounded-full bg-white/80 ring-1 ring-[#9780ED]/20 flex items-center justify-center shadow-sm self-center">
-                      <ArrowLeft className="w-4 h-4 text-[#9780ED]" />
-                    </div>
-                  ])}
+                {/* Screenshots carousel */}
+                <div className="relative rounded-[2rem] bg-white/60 backdrop-blur-xl ring-1 ring-white/40 shadow-[0_8px_40px_rgba(91,45,193,0.08)] p-3 overflow-hidden">
+                  {/* Header above image */}
+                  <div className="flex items-center gap-3 px-5 py-3">
+                    <Activity className="w-5 h-5 text-[#9780ED] shrink-0" />
+                    <p className="text-base font-semibold text-slate-800">מנתחת נתוני Revenue Leakage בזמן אמת</p>
+                  </div>
+                  <div className="relative rounded-[1.5rem] overflow-hidden aspect-[16/10] bg-slate-100">
+                    {screenshots.map((src, i) => (
+                      <img
+                        key={i}
+                        src={src}
+                        alt={`צילום מסך ${i + 1}`}
+                        className="absolute inset-0 w-full h-full object-cover object-top transition-all duration-700 ease-in-out"
+                        style={{ opacity: screenshotIndex === i ? 1 : 0, transform: screenshotIndex === i ? 'scale(1)' : 'scale(1.03)' }}
+                      />
+                    ))}
+                  </div>
+                  {/* Dots indicator */}
+                  <div className="flex justify-center gap-2 mt-4 mb-1">
+                    {screenshots.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setScreenshotIndex(i)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${screenshotIndex === i ? 'bg-[#9780ED] w-6' : 'bg-slate-300 hover:bg-slate-400'}`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -883,13 +901,9 @@ export default function App() {
                     <div key={set} className="flex flex-col gap-4 p-4" aria-hidden={set === 2}>
                       {/* Technology + Features — unified style */}
                       {[
-                        { icon: Zap, title: 'מנוע AI ייעודי למלונאות', desc: 'ניתוח תהליכים תפעוליים ופיננסיים ע"י זיהוי חריגות וניתוח דפוסים מבוסס נתונים.' },
-                        { icon: Lightbulb, title: 'בסיס ידע מקצועי מובנה', desc: 'מתודולוגיות בקרה ותפעול מעולם המלונאות, שהוטמעו כחוקים ופיצ\'רים חכמים.' },
                         { icon: Mail, title: 'מייל יומי למלונאי', desc: 'סיכום יומי אוטומטי שחוסך זמן וכסף — ישירות לתיבת הדואר.', highlight: true },
-                        { icon: BarChart3, title: 'ארכיטקטורה מודולרית וסקלאבילית', desc: 'תשתית מתקדמת לעיבוד נתונים בזמן אמת וניטור תהליכים.' },
                         { icon: Activity, title: 'ניטור 24/7 בזמן אמת', desc: 'מאפשרת Cost Control יומי — מידע בזמן, תגובה מהירה, פחות הפסד.' },
                         { icon: Smartphone, title: 'אפליקציה ייעודית לביקורת', desc: 'ריכוז התראות, סימון טופל, הערות ואישורים ו׳מבט על׳ שיפור לאורך זמן.', highlight: true },
-                        { icon: ShieldCheck, title: 'אבטחת מידע ברמה ארגונית', desc: 'עמידה בתקנים מחמירים, כולל הסמכות ISO27001 / SOC2.' },
                         { icon: PieChart, title: 'דוחות חכמים', desc: 'ברמת מלון, רשת ותחומי ביקורת — למחקר ומעקב אחרי תופעות לאורך זמן.', highlight: true },
                         { icon: BellRing, title: 'התראות חכמות – Real-Time Alerts', desc: 'מידע בזמן = תגובה מהירה = פחות הפסד. התרעות ישירות לצוותים הרלוונטיים.' },
                         { icon: ShieldCheck, title: 'שקיפות מלאה', desc: 'תדעו בכל רגע איפה אתם עומדים — בקרה חכמה על כל פרט פיננסי.' },
