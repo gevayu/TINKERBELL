@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AuroraBackground } from '@/components/ui/aurora-background';
+import { RippleBackground } from '@/components/ui/interactive-ripple-background';
 import {
   ArrowLeft,
   Activity,
@@ -75,7 +76,36 @@ export default function App() {
   const [accumulatedAmount, setAccumulatedAmount] = useState(245081);
   const [alertIndex, setAlertIndex] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [expandedTestimonial, setExpandedTestimonial] = useState(null);
   const isScrollingRef = React.useRef(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const bulbPos = React.useRef({ x: 0, y: 0 });
+  const bulbRef = React.useRef(null);
+
+  // Smooth bulb follow cursor
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    let animId;
+    const animate = () => {
+      bulbPos.current.x += (mousePos.x - bulbPos.current.x) * 0.12;
+      bulbPos.current.y += (mousePos.y - bulbPos.current.y) * 0.12;
+      if (bulbRef.current) {
+        bulbRef.current.style.transform = `translate(${bulbPos.current.x - 400}px, ${bulbPos.current.y - 400}px)`;
+      }
+      animId = requestAnimationFrame(animate);
+    };
+    animId = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animId);
+    };
+  }, [mousePos]);
 
   // easeInOutCubic smooth scroll
   const smoothScrollTo = React.useCallback((targetY, duration = 900) => {
@@ -150,6 +180,40 @@ export default function App() {
 
   return (
     <div dir="rtl" className="min-h-screen bg-[#FCFCFD] text-slate-900 selection:bg-[#EDE8FB] selection:text-[#5B2DC1] overflow-x-clip" style={{ fontFamily: "'Polin', system-ui, -apple-system, sans-serif" }}>
+
+      {/* Purple bulb following cursor */}
+      <div
+        ref={bulbRef}
+        className="fixed top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none z-[99]"
+        style={{ background: 'radial-gradient(circle, rgba(151,128,237,0.13) 0%, rgba(151,128,237,0.04) 40%, transparent 70%)', filter: 'blur(80px)', willChange: 'transform', mixBlendMode: 'multiply' }}
+      />
+
+      {/* Contact Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4" onClick={(e) => { if (e.target === e.currentTarget) setShowPopup(false); }}>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+          <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 z-10">
+            <button onClick={() => setShowPopup(false)} className="absolute top-5 left-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors text-slate-500 hover:text-slate-800">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+            </button>
+            <h3 className="text-2xl font-semibold text-slate-900 mb-2 tracking-tight">התנסו במלון שלכם</h3>
+            <p className="text-slate-500 font-light mb-6">נחזור בהקדם לתיאום חיבור המערכת למלון שלכם.</p>
+            <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); setShowPopup(false); }}>
+              <input required type="text" placeholder="שם מלא" className="w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#9780ED]/40 focus:border-[#9780ED] transition" />
+              <input required type="text" placeholder="שם החברה / המלון" className="w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#9780ED]/40 focus:border-[#9780ED] transition" />
+              <input required type="tel" placeholder="טלפון" dir="rtl" className="w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 text-right focus:outline-none focus:ring-2 focus:ring-[#9780ED]/40 focus:border-[#9780ED] transition" />
+              <input required type="email" placeholder="כתובת מייל" className="w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#9780ED]/40 focus:border-[#9780ED] transition" />
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input required type="checkbox" className="mt-1 accent-[#5B2DC1] shrink-0" />
+                <span className="text-sm text-slate-500 font-light leading-relaxed">קראתי ואני מסכים/ה ל<a href="#" className="text-[#5B2DC1] underline underline-offset-2 hover:text-[#3d1e87]">מדיניות הפרטיות</a> של האתר.</span>
+              </label>
+              <button type="submit" className="w-full bg-[#5B2DC1] text-white py-3.5 rounded-full font-semibold text-lg hover:bg-[#3d1e87] hover:shadow-lg hover:shadow-[#5B2DC1]/20 transition-all duration-300 mt-1">
+                שלחו פרטים
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
       <style dangerouslySetInnerHTML={{__html: `
         @font-face { font-family: 'Polin'; src: url('Polin-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
         @font-face { font-family: 'Polin'; src: url('Polin-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
@@ -332,6 +396,48 @@ export default function App() {
         .chat-frame-7 { animation-delay: 42s; }
         .chat-frame-8 { animation-delay: 48s; }
         .chat-frame-9 { animation-delay: 54s; }
+
+        @keyframes highlight-border {
+          0%  { box-shadow: inset 0 0 0 2px rgba(151,128,237,0.1); }
+          5%  { box-shadow: inset 0 0 0 2px rgba(151,128,237,0.7); }
+          50% { box-shadow: inset 0 0 0 2px rgba(151,128,237,0.7); }
+          58% { box-shadow: inset 0 0 0 2px rgba(151,128,237,0.1); }
+          100%{ box-shadow: inset 0 0 0 2px rgba(151,128,237,0.1); }
+        }
+        .animate-highlight-border {
+          animation: highlight-border 18s ease-in-out infinite;
+          border-radius: 1rem;
+        }
+
+        @keyframes highlight-ripple {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(151,128,237,0); opacity: 0; }
+          7%  { box-shadow: 0 0 0 0 rgba(151,128,237,0.25); opacity: 1; }
+          20% { box-shadow: 0 0 0 36px rgba(151,128,237,0); opacity: 0; }
+        }
+        .animate-highlight-ripple {
+          animation: highlight-ripple 18s ease-out infinite;
+          border-radius: 1rem;
+        }
+
+        @keyframes highlight-ripple-2 {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(151,128,237,0); opacity: 0; }
+          20% { box-shadow: 0 0 0 0 rgba(151,128,237,0.2); opacity: 1; }
+          33% { box-shadow: 0 0 0 36px rgba(151,128,237,0); opacity: 0; }
+        }
+        .animate-highlight-ripple-2 {
+          animation: highlight-ripple-2 18s ease-out infinite;
+          border-radius: 1rem;
+        }
+
+        @keyframes highlight-ripple-3 {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(151,128,237,0); opacity: 0; }
+          33% { box-shadow: 0 0 0 0 rgba(151,128,237,0.15); opacity: 1; }
+          46% { box-shadow: 0 0 0 36px rgba(151,128,237,0); opacity: 0; }
+        }
+        .animate-highlight-ripple-3 {
+          animation: highlight-ripple-3 18s ease-out infinite;
+          border-radius: 1rem;
+        }
       `}} />
 
       {/* Floating Pill Navigation */}
@@ -339,7 +445,9 @@ export default function App() {
         <div className="w-[calc(100%-1rem)] md:w-[calc(100%-3rem)] max-w-[88rem] mx-auto">
           <div className={`flex justify-between items-center h-16 lg:h-20 px-5 lg:px-8 rounded-2xl lg:rounded-[2rem] transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-lg shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-slate-200/60' : 'bg-white/50 backdrop-blur-md border border-white/40 shadow-sm'}`}>
             <div className="flex items-center">
-              <img src="/logo-tinkerbell.png" alt="Tinkerbell" className="h-10 lg:h-12 w-auto" />
+              <button onClick={() => smoothScrollTo(0, 900)} className="focus:outline-none">
+                <img src="/logo-tinkerbell.png" alt="Tinkerbell" className="h-10 lg:h-12 w-auto" />
+              </button>
             </div>
 
             <div className="hidden md:flex items-center gap-10 text-[15px] font-medium text-slate-600">
@@ -349,11 +457,11 @@ export default function App() {
             </div>
 
             <div className="hidden md:flex items-center gap-6">
-              <button className="text-[15px] font-medium text-slate-600 hover:text-slate-900 transition-colors">
-                התחברות
+              <button onClick={() => setShowPopup(true)} className="text-[15px] font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                ליצירת קשר
               </button>
-              <button className="text-[15px] font-semibold bg-[#5B2DC1] text-white px-6 py-2.5 rounded-full hover:bg-[#3d1e87] hover:shadow-lg hover:shadow-[#5B2DC1]/20 hover:-translate-y-0.5 transition-all duration-300">
-                התחילו ניסיון בחינם
+              <button onClick={() => setShowPopup(true)} className="text-[15px] font-semibold bg-[#5B2DC1] text-white px-6 py-2.5 rounded-full hover:bg-[#3d1e87] hover:shadow-lg hover:shadow-[#5B2DC1]/20 hover:-translate-y-0.5 transition-all duration-300">
+                להתנסות במלון שלכם
               </button>
             </div>
           </div>
@@ -362,7 +470,7 @@ export default function App() {
 
       {/* Section Nav Dots */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2 z-[100] flex flex-col gap-3">
-        {['Hero','בעיה','ROI','שינוי','איך עובד','טכנולוגיה','פיצ\'רים','לקוח 1','לקוח 2','לקוח 3'].map((label, i) => (
+        {['Hero','בעיה','ROI','איך עובד','לקוח 1','לקוח 2','לקוח 3'].map((label, i) => (
           <button
             key={i}
             onClick={() => smoothScrollTo(i * window.innerHeight, 900)}
@@ -400,8 +508,8 @@ export default function App() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-5">
-                  <button className="group flex items-center justify-center gap-3 bg-[#5B2DC1] text-white px-8 py-4.5 rounded-full text-lg font-semibold hover:bg-[#3d1e87] hover:shadow-xl hover:shadow-[#9780ED]/20 hover:-translate-y-1 transition-all duration-300">
-                    התחילו חודש ניסיון
+                  <button onClick={() => setShowPopup(true)} className="group flex items-center justify-center gap-3 bg-[#5B2DC1] text-white px-8 py-4.5 rounded-full text-lg font-semibold hover:bg-[#3d1e87] hover:shadow-xl hover:shadow-[#9780ED]/20 hover:-translate-y-1 transition-all duration-300">
+                    להתנסות במלון שלכם
                     <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1.5 transition-transform" />
                   </button>
                   <div className="flex flex-col gap-1">
@@ -415,7 +523,7 @@ export default function App() {
 
               {/* Premium UI Widget Mockup */}
               <div className="lg:col-span-5 relative">
-                <div className="aspect-[4/5] lg:aspect-square rounded-[2rem] bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] ring-1 ring-slate-900/5 relative flex flex-col overflow-hidden transform lg:-rotate-2 hover:rotate-0 transition-transform duration-700">
+                <div className="aspect-[4/5] lg:aspect-square rounded-[2rem] bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] ring-1 ring-slate-900/5 relative flex flex-col overflow-hidden">
                   <div className="p-8 pb-0">
                     <div className="flex justify-between items-start mb-2">
                       <div className="w-12 h-12 rounded-2xl bg-[#F8F6FE] flex items-center justify-center">
@@ -425,7 +533,7 @@ export default function App() {
                         <TrendingUp className="w-4 h-4" /> +13.5% ROI
                       </div>
                     </div>
-                    <h3 className="text-slate-500 text-sm font-medium mt-6 mb-1 uppercase tracking-wider">נחסך החודש (Live)</h3>
+                    <h3 className="text-slate-500 text-sm font-medium mt-6 mb-1 uppercase tracking-wider">טופל במערכת החודש (Live)</h3>
                     <div className="text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight h-[1.2em] overflow-hidden flex items-center">
                       <RollingNumber value={accumulatedAmount} />
                     </div>
@@ -480,8 +588,8 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Rotating Alert Widget - Raised by 80px from the lowered position */}
-                <div className="absolute -left-8 p-5 rounded-2xl bg-white/95 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.12)] ring-1 ring-slate-200/60 max-w-[260px] animate-bounce z-20" style={{ top: 'calc(33.33% + 70px)', animationDuration: '4s'}}>
+                {/* Rotating Alert Widget - positioned at ROI badge corner */}
+                <div className="absolute -left-8 top-2 p-5 rounded-2xl bg-white/95 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.12)] ring-1 ring-slate-200/60 max-w-[260px] animate-bounce z-20" style={{ animationDuration: '4s'}}>
                   <div className="flex items-start gap-4">
                     <div className={`w-10 h-10 rounded-full ${currentAlert.color} flex items-center justify-center shrink-0 shadow-lg shadow-[#C4B5F7] transition-all duration-500`}>
                       <currentAlert.icon
@@ -514,11 +622,10 @@ export default function App() {
         </AuroraBackground>
         </div>
 
-        {/* The Problem Section - Infinite Marquee with Animated Icons */}
+        {/* The Problem Section - Double Marquee with Glassmorphism */}
         <section className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:20}}>
-          <img src="/backgrounds/hammocks-with-palm-trees.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex: 0, filter: 'brightness(1.15)'}} />
-          <div className="absolute inset-0 bg-white/80" style={{zIndex: 1}}></div>
-          <div className="h-full flex flex-col justify-center gap-10 py-8 relative" style={{zIndex: 2}}>
+          <RippleBackground className="bg-gradient-to-b from-[#F8F6FE] via-white to-[#F8F8F9]">
+          <div className="h-full flex flex-col justify-center gap-8 py-8 relative">
             <div className="max-w-3xl mx-auto text-center px-6 lg:px-8">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">הכסף נמצא בפרטים הקטנים</h2>
               <p className="text-xl text-slate-500 font-light leading-relaxed mb-4">
@@ -529,38 +636,62 @@ export default function App() {
               </p>
             </div>
 
-          <div className="relative group w-full overflow-hidden" dir="ltr">
-            <div className="absolute inset-y-0 right-0 w-16 md:w-64 bg-gradient-to-l from-[#F8F8F9] to-transparent z-10 pointer-events-none"></div>
-            <div className="absolute inset-y-0 left-0 w-16 md:w-64 bg-gradient-to-r from-[#F8F8F9] to-transparent z-10 pointer-events-none"></div>
-
-            <div className="flex gap-8 animate-marquee-ltr" style={{width: 'max-content'}}>
-            {[1, 2].map((track) => (
-              <div key={track} className="flex gap-8 shrink-0" aria-hidden={track === 2}>
-                {[
-                  { icon: Users, anim: "animate-pulse", title: "No-Shows", desc: "אורחים שלא הגיעו והמלון פשוט שכח לחייב על דמי ביטול. כסף שנשאר על הרצפה במקום להכנס לקופה." },
-                  { icon: ShieldAlert, anim: "animate-bell-swing", title: "הנחות לא מאושרות", desc: "הנחות או שדרוגים שניתנים בקבלה ללא אישור מנהל או הצדקה תפעולית, החותכים ישירות בשורת הרווח." },
-                  { icon: Clock, anim: "animate-spin-slow", title: "זמן תגובה ארוך", desc: "בעיות פיננסיות שמתגלות רק בדוחות סוף החודש של הנהלת החשבונות, כאשר כבר מאוחר מדי לתקן." },
-                  { icon: DoorOpen, anim: "animate-float-subtle", title: "עזיבה מאוחרת", desc: "אורחים שנשארו בחדר מעבר לשעת הצ'ק-אאוט הקבועה ולא חויבו בתוספת תשלום כנדרש על פי הנהלים." },
-                  { icon: Percent, anim: "animate-heartbeat", title: "עמלות יתר ל-OTA", desc: "תשלום עמלות עודפות לסוכנים (כמו Booking או Agoda) על הזמנות שבוטלו או קוצרו ברגע האחרון." },
-                  { icon: CreditCard, anim: "animate-pulse", title: "שגיאות סליקה", desc: "כרטיסי אשראי שנדחו, פגו תוקף או חיובים שבוטלו מבלי שהקבלה טיפלה בגבייה חלופית מהאורח." },
-                  { icon: Utensils, anim: "animate-float-subtle", title: "חיובים אבודים ב-F&B", desc: "הזמנות במסעדה, בבר או בשירות החדרים שלא מצאו את דרכן לכרטיס החדר של האורח." },
-                  { icon: Tags, anim: "animate-wiggle", title: "קידוד מחיר שגוי", desc: "הזנת תעריף חברה (Corporate Rate) או קודי הנחה לאורחים פרטיים, מה שחותך בעשרות אחוזים את הרווח." },
-                  { icon: CarFront, anim: "animate-car-move", title: "תוספות נשכחות", desc: "פספוס חיובים יומיים מצטברים על חניון המלון, כניסה לספא, טיפולים או הוספת מיטות לא מדווחות." },
-                  { icon: BedDouble, anim: "animate-float-subtle", title: "שדרוגים 'בחינם'", desc: "מתן חדרים בקטגוריות פרמיום או סוויטות ללא תוספת תשלום (Upsell) וללא אישור מוקדם." },
-                  { icon: UserX, anim: "animate-pulse", title: "פרופילים כפולים", desc: "כפילויות במערכת (PMS) שנועלות חדרים פנויים למכירה ומונעות הזמנות חדשות." }
-                ].map((item, i) => (
-                  <div key={i} dir="rtl" className="w-[320px] md:w-[380px] p-8 md:p-10 rounded-[2rem] bg-white ring-1 ring-slate-900/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right">
-                    <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-8 mr-auto">
-                      <item.icon className={`w-6 h-6 text-slate-700 ${item.anim}`} />
+            <div className="flex flex-col gap-5">
+              {/* Row 1 — scrolls LTR */}
+              <div className="relative group w-full overflow-hidden" dir="ltr">
+                <div className="absolute inset-y-0 right-0 w-16 md:w-48 bg-gradient-to-l from-[#F8F6FE] to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-y-0 left-0 w-16 md:w-48 bg-gradient-to-r from-[#F8F6FE] to-transparent z-10 pointer-events-none"></div>
+                <div className="flex gap-6 animate-marquee-ltr" style={{width: 'max-content'}}>
+                  {[1, 2].map((track) => (
+                    <div key={track} className="flex gap-6 shrink-0" aria-hidden={track === 2}>
+                      {[
+                        { icon: Users, anim: "animate-pulse", title: "No-Shows", desc: "אורחים שלא הגיעו והמלון פשוט שכח לחייב על דמי ביטול. כסף שנשאר על הרצפה במקום להכנס לקופה.", accent: "border-red-400" },
+                        { icon: ShieldAlert, anim: "animate-bell-swing", title: "הנחות לא מאושרות", desc: "הנחות או שדרוגים שניתנים בקבלה ללא אישור מנהל או הצדקה תפעולית, החותכים ישירות בשורת הרווח.", accent: "border-red-400" },
+                        { icon: Clock, anim: "animate-spin-slow", title: "זמן תגובה ארוך", desc: "בעיות פיננסיות שמתגלות רק בדוחות סוף החודש של הנהלת החשבונות, כאשר כבר מאוחר מדי לתקן.", accent: "border-amber-400" },
+                        { icon: DoorOpen, anim: "animate-float-subtle", title: "עזיבה מאוחרת", desc: "אורחים שנשארו בחדר מעבר לשעת הצ'ק-אאוט הקבועה ולא חויבו בתוספת תשלום כנדרש על פי הנהלים.", accent: "border-[#9780ED]" },
+                        { icon: Percent, anim: "animate-heartbeat", title: "עמלות יתר ל-OTA", desc: "תשלום עמלות עודפות לסוכנים (כמו Booking או Agoda) על הזמנות שבוטלו או קוצרו ברגע האחרון.", accent: "border-[#9780ED]" },
+                        { icon: CreditCard, anim: "animate-pulse", title: "שגיאות סליקה", desc: "כרטיסי אשראי שנדחו, פגו תוקף או חיובים שבוטלו מבלי שהקבלה טיפלה בגבייה חלופית מהאורח.", accent: "border-amber-400" },
+                      ].map((item, i) => (
+                        <div key={i} dir="rtl" className={`w-[300px] md:w-[360px] p-7 md:p-8 rounded-[1.5rem] bg-white/60 backdrop-blur-2xl ring-1 ring-white/40 shadow-[0_8px_40px_rgba(91,45,193,0.08)] hover:bg-white/75 hover:ring-white/60 hover:shadow-[0_16px_48px_rgba(91,45,193,0.12)] hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right border-r-[3px] ${item.accent}`}>
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EDE8FB] to-[#D4CAFE] flex items-center justify-center mb-5 mr-auto">
+                            <item.icon className={`w-5 h-5 text-[#5B2DC1] ${item.anim}`} />
+                          </div>
+                          <h3 className="text-xl font-semibold text-slate-900 mb-3 tracking-tight">{item.title}</h3>
+                          <p className="text-slate-500 leading-relaxed text-base font-light">{item.desc}</p>
+                        </div>
+                      ))}
                     </div>
-                    <h3 className="text-2xl font-semibold text-slate-900 mb-4 tracking-tight">{item.title}</h3>
-                    <p className="text-slate-500 leading-relaxed text-lg font-light">{item.desc}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            ))}
+
+              {/* Row 2 — scrolls RTL */}
+              <div className="relative group w-full overflow-hidden" dir="ltr">
+                <div className="absolute inset-y-0 right-0 w-16 md:w-48 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-y-0 left-0 w-16 md:w-48 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+                <div className="flex gap-6 animate-marquee-rtl" style={{width: 'max-content'}}>
+                  {[1, 2].map((track) => (
+                    <div key={track} className="flex gap-6 shrink-0" aria-hidden={track === 2}>
+                      {[
+                        { icon: Utensils, anim: "animate-float-subtle", title: "חיובים אבודים ב-F&B", desc: "הזמנות במסעדה, בבר או בשירות החדרים שלא מצאו את דרכן לכרטיס החדר של האורח.", accent: "border-[#9780ED]" },
+                        { icon: Tags, anim: "animate-wiggle", title: "קידוד מחיר שגוי", desc: "הזנת תעריף חברה (Corporate Rate) או קודי הנחה לאורחים פרטיים, מה שחותך בעשרות אחוזים את הרווח.", accent: "border-red-400" },
+                        { icon: CarFront, anim: "animate-car-move", title: "תוספות נשכחות", desc: "פספוס חיובים יומיים מצטברים על חניון המלון, כניסה לספא, טיפולים או הוספת מיטות לא מדווחות.", accent: "border-amber-400" },
+                        { icon: BedDouble, anim: "animate-float-subtle", title: "שדרוגים 'בחינם'", desc: "מתן חדרים בקטגוריות פרמיום או סוויטות ללא תוספת תשלום (Upsell) וללא אישור מוקדם.", accent: "border-[#9780ED]" },
+                        { icon: UserX, anim: "animate-pulse", title: "פרופילים כפולים", desc: "כפילויות במערכת (PMS) שנועלות חדרים פנויים למכירה ומונעות הזמנות חדשות.", accent: "border-amber-400" },
+                      ].map((item, i) => (
+                        <div key={i} dir="rtl" className={`w-[300px] md:w-[360px] p-7 md:p-8 rounded-[1.5rem] bg-white/60 backdrop-blur-2xl ring-1 ring-white/40 shadow-[0_8px_40px_rgba(91,45,193,0.08)] hover:bg-white/75 hover:ring-white/60 hover:shadow-[0_16px_48px_rgba(91,45,193,0.12)] hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right border-r-[3px] ${item.accent}`}>
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EDE8FB] to-[#D4CAFE] flex items-center justify-center mb-5 mr-auto">
+                            <item.icon className={`w-5 h-5 text-[#5B2DC1] ${item.anim}`} />
+                          </div>
+                          <h3 className="text-xl font-semibold text-slate-900 mb-3 tracking-tight">{item.title}</h3>
+                          <p className="text-slate-500 leading-relaxed text-base font-light">{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
 
             <div className="max-w-3xl mx-auto text-center px-6 lg:px-8">
               <p className="text-xl text-slate-700 font-semibold mb-4">
@@ -571,41 +702,25 @@ export default function App() {
               </p>
             </div>
           </div>
-
+          </RippleBackground>
         </section>
 
 {/* ROI Stats Section */}
-        <section className="bg-[#F8F8F9] rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:30, overflow:'hidden'}}>
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center translate-y-8">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">חיסכון תפעולי מדיד עם המערכת כבר מהיום הראשון</h2>
-              <p className="text-xl text-slate-500 font-light leading-relaxed mb-2">מרווחי הרווח בענף נשחקים. אין יותר מקום לניהול עיוור.</p>
-              <p className="text-xl text-slate-500 font-light leading-relaxed">במלונות פעילים כל אחוז רווח קובע: טינקרבל מוכיחה את זה בתוצאות.</p>
-            </div>
+        <section className="rounded-t-3xl relative" style={{position:'sticky', top:0, height:'100vh', zIndex:30, overflow:'hidden'}}>
+          {/* Radial gradient background */}
+          <div className="absolute top-0 z-[-2] h-full w-full rotate-180 transform bg-[#F8F6FE] bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,100%,0)_0,rgba(213,197,255,.5)_100%)]"></div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-              <div className="rounded-[2rem] bg-slate-50 ring-1 ring-slate-900/5 p-10 flex flex-col gap-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
-                <div className="text-5xl lg:text-6xl font-bold text-[#9780ED] tracking-tighter">עד 50%</div>
-                <p className="text-lg text-slate-600 font-light leading-relaxed">חיסכון בזמן ובמשאבי ביקורת</p>
-              </div>
-              <div className="rounded-[2rem] bg-slate-50 ring-1 ring-slate-900/5 p-10 flex flex-col gap-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
-                <div className="text-5xl lg:text-6xl font-bold text-[#9780ED] tracking-tighter">13%<span className="text-3xl">+</span></div>
-                <p className="text-lg text-slate-600 font-light leading-relaxed">הגדלת רווחיות</p>
-              </div>
-              <div className="rounded-[2rem] bg-slate-50 ring-1 ring-slate-900/5 p-10 flex flex-col gap-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
-                <div className="text-5xl lg:text-6xl font-bold text-[#9780ED] tracking-tighter">₪100K<span className="text-3xl">+</span></div>
-                <p className="text-lg text-slate-600 font-light leading-relaxed">חיסכון חודשי ברשתות של 1,000 חדרים ומעלה</p>
-              </div>
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative z-10">
+            {/* Title — top */}
+            <div className="max-w-3xl mx-auto text-center mb-6">
+              <h2 className="text-4xl lg:text-5xl font-semibold mb-4 text-slate-900 tracking-tight">חיסכון מדיד כבר מהיום הראשון</h2>
             </div>
 
             {/* Logo Carousel */}
-            <div className="text-center mb-10 -mt-10">
-              <p className="text-base font-semibold text-slate-400 uppercase tracking-[0.2em]">מלונות שכבר עובדים עם טינקרבל גילו איפה מסתתר הרווח</p>
+            <div className="max-w-3xl mx-auto text-center mb-6">
+              <p className="text-xl text-slate-500 font-light leading-relaxed">הצטרפו למעולים שמצטיינים עם טינקרבל כבר היום</p>
             </div>
-            <div className="relative group overflow-hidden" dir="ltr">
-              <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#F8F8F9] to-transparent z-10 pointer-events-none"></div>
-              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#F8F8F9] to-transparent z-10 pointer-events-none"></div>
+            <div className="relative group overflow-hidden mb-10 rounded-[2rem] bg-white/50 backdrop-blur-[2px] py-4" dir="ltr" style={{maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'}}>
               <div className="flex animate-marquee-rtl items-center" style={{width: 'max-content'}}>
                 {[1, 2].map(set => (
                   <div key={set} className="flex gap-16 shrink-0 items-center py-4 px-8" aria-hidden={set === 2}>
@@ -623,208 +738,184 @@ export default function App() {
                       { src: '/HOTELS/indigo Hotel.svg', alt: 'Hotel Indigo' },
                       { src: '/HOTELS/לוגו מלונות מטיילים.svg', alt: 'מלונות מטיילים' },
                     ].map((logo, i) => (
-                      <div key={i} className="h-24 flex items-center justify-center shrink-0">
-                        <img src={logo.src} alt={logo.alt} className="h-24 w-auto object-contain grayscale opacity-65 hover:grayscale-0 hover:opacity-100 transition-all duration-300" />
+                      <div key={i} className="h-[7.5rem] flex items-center justify-center shrink-0">
+                        <img src={logo.src} alt={logo.alt} className="h-[7.5rem] w-auto object-contain grayscale opacity-65 hover:grayscale-0 hover:opacity-100 transition-all duration-300" />
                       </div>
                     ))}
                   </div>
                 ))}
               </div>
             </div>
+
+            <div className="max-w-3xl mx-auto text-center mb-8 mt-12">
+              <p className="text-xl text-slate-500 font-light leading-relaxed">במלונות פעילים כל אחוז רווח קובע: טינקרבל מוכיחה את זה בתוצאות.</p>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[70%] mx-auto">
+              <div className="rounded-[2rem] bg-white/65 ring-1 ring-slate-900/5 px-10 py-[3.25rem] flex flex-col gap-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+                <div className="text-5xl lg:text-6xl font-bold text-[#9780ED] tracking-tighter">עד 50%</div>
+                <p className="text-lg text-slate-600 font-light leading-relaxed">חיסכון במשאבי ביקורת ותיקון ליקויים</p>
+              </div>
+              <div className="rounded-[2rem] bg-white/65 ring-1 ring-slate-900/5 px-10 py-[3.25rem] flex flex-col gap-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+                <div className="text-5xl lg:text-6xl font-bold text-[#9780ED] tracking-tighter">24/7</div>
+                <p className="text-lg text-slate-600 font-light leading-relaxed">365 ימים — ביקורת מלונאית מקיפה</p>
+              </div>
+              <div className="rounded-[2rem] bg-white/65 ring-1 ring-slate-900/5 px-10 py-[3.25rem] flex flex-col gap-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+                <div className="text-5xl lg:text-6xl font-bold text-[#9780ED] tracking-tighter">₪100K<span className="text-3xl">+</span></div>
+                <p className="text-lg text-slate-600 font-light leading-relaxed">ייעול חודשי ל-1,000 חדרים</p>
+              </div>
+            </div>
+
           </div>
         </section>
 
-        {/* Transformation Section */}
-        <section className="bg-white rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:40, overflow:'hidden'}}>
-          <img src="/backgrounds/freepik__talk__38021.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(1.1) saturate(0.3)', opacity: 0.5}} />
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative" style={{zIndex:1}}>
-            <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight mb-16 text-center">
-              טינקרבל – שומרת הסף הפיננסית של המלון
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { before: 'היא לא מחליפה עובדים', after: 'היא מעצימה אותם' },
-                { before: 'לא עוד דוחות בדיעבד', after: 'שליטה ריל טיים ברווחיות' },
-                { before: 'מחיפוש וגילוי מאוחר', after: 'לכלי עבודה למצויינות תפעולית' },
-              ].map((item, i) => (
-                <div key={i} className="group rounded-[2rem] bg-white/85 backdrop-blur-sm ring-1 ring-slate-900/5 p-10 flex flex-col items-center gap-6 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
-                  <p className="text-xl font-semibold text-slate-500 leading-snug">{item.before}</p>
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#9780ED]/10 animate-float-subtle" style={{animationDuration: '1.2s'}}>
-                    <ArrowLeft className="w-5 h-5 text-[#9780ED] -rotate-90" />
-                  </div>
-                  <p className="text-2xl font-semibold text-slate-900 leading-snug">{item.after}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        {/* How It Works + Technology */}
-        <section id="how-it-works" className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:50}}>
-          <img src="/backgrounds/two-beautiful-girls-standing-by-airport.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex: 0}} />
-          <div className="absolute inset-0 bg-[#F8F8F9]/75" style={{zIndex: 1}}></div>
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative" style={{zIndex: 2}}>
-            <div className="text-center max-w-2xl mx-auto mb-20">
-              <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">איך טינקרבל עובדת?</h2>
-              <p className="text-xl text-slate-500 font-light">ללא התקנות מורכבות. המערכת מתחברת מאחורי הקלעים ומתחילה לעבוד.</p>
-              <p className="text-2xl font-semibold text-slate-600 mt-2">תוך שעות, לא שבועות</p>
-            </div>
 
-            <div className="grid md:grid-cols-3 gap-12 relative max-w-6xl mx-auto">
-              <div className="hidden md:block absolute top-[40px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-transparent via-[#C4B5F7] to-transparent z-0"></div>
-              {[
-                { num: "01", title: "התממשקות (API)", desc: "חיבור שקוף וישיר למערכת ה-PMS שלכם. תהליך של מספר דקות ללא שום השבתה של המלון." },
-                { num: "02", title: "התאמה אישית", desc: "סשן קצרצר לבחירת ההתרעות הקריטיות מתוך מאגר של למעלה מ-50 תרחישים עסקיים שונים." },
-                { num: "03", title: "התחלת עבודה", desc: "Tinkerbell מתחילה לסרוק, לנטר ולשלוח התרעות בזמן אמת לצוותים הרלוונטיים." }
-              ].map((step, i) => (
-                <div key={i} className={`relative pt-12 pb-12 px-8 group transition-all duration-500 ${i === 2 ? 'rounded-[2.5rem] ring-4 ring-[#9780ED]/30 hover:ring-8 bg-white/80 shadow-2xl shadow-[#9780ED]/10 hover:shadow-2xl hover:shadow-[#9780ED]/20 backdrop-blur-sm transition-all duration-300' : 'rounded-[2.5rem] ring-2 ring-white/50 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:ring-[#9780ED]/20 hover:shadow-xl transition-all duration-500'}`}>
-                  {i < 2 && (
-                    <div className="hidden md:flex absolute top-2 -left-[3rem] w-[3rem] h-16 items-center justify-center z-10">
-                      <div className="w-10 h-10 bg-white rounded-full ring-4 ring-[#FCFCFD] shadow-sm flex items-center justify-center animate-bounce-x">
-                        <ArrowLeft className="w-5 h-5 text-[#9780ED]" />
-                      </div>
-                    </div>
-                  )}
-                  <div className="w-16 h-16 rounded-2xl bg-white ring-1 ring-slate-200 flex items-center justify-center text-xl font-bold text-slate-900 mx-auto md:mx-0 relative z-20 mb-8 shadow-sm group-hover:shadow-md transition-shadow">
-                    {step.num}
-                  </div>
-                  <div className="text-center md:text-right">
-                    <h3 className="text-2xl font-semibold text-slate-900 mb-4 tracking-tight">{step.title}</h3>
-                    <p className="text-slate-500 leading-relaxed font-light text-lg">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* How It Works — single section, two stacking cards */}
+        <div id="how-it-works" style={{height: '200vh', position: 'relative', zIndex: 50}}>
+          {/* Base layer — sticky background + title + card 1 */}
+          <div className="sticky top-0 h-screen overflow-hidden rounded-t-3xl">
+            <div className="absolute inset-0 z-0" style={{background: 'radial-gradient(125% 125% at 50% 10%, #fff 40%, #9780ED 100%)'}}></div>
+            <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex items-center relative z-10">
+              <div className="grid lg:grid-cols-12 gap-12 w-full">
 
-        </section>
-
-        {/* Technology Section */}
-        <section className="bg-[#F8F8F9] rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:60, overflow:'hidden'}}>
-          <img src="/backgrounds/freepik__-__34843.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0, filter:'brightness(1.3) saturate(0.4)', opacity:0.5}} />
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center relative" style={{zIndex:1}}>
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight mb-4">הטכנולוגיה מאחורי טינקרבל</h2>
-              <p className="text-xl text-slate-500 font-light leading-relaxed">מערכת AI ייעודית לעולם המלונאות, המשלבת מודלים מתקדמים של בינה מלאכותית עם מתודולוגיות בקרה וניסיון מקצועי רב-שנים.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                { icon: Zap, title: 'מנוע AI ייעודי למלונאות', desc: 'ניתוח תהליכים תפעוליים ופיננסיים ע"י זיהוי חריגות וניתוח דפוסים מבוסס נתונים.' },
-                { icon: Lightbulb, title: 'בסיס ידע מקצועי מובנה', desc: 'מתודולוגיות בקרה ותפעול מעולם המלונאות, שהוטמעו כחוקים ופיצ\'רים חכמים.' },
-                { icon: BarChart3, title: 'ארכיטקטורה מודולרית וסקלאבילית', desc: 'תשתית מתקדמת לעיבוד נתונים בזמן אמת וניטור תהליכים.' },
-                { icon: ShieldCheck, title: 'אבטחת מידע ברמה ארגונית', desc: 'עמידה בתקנים מחמירים, כולל הסמכות ISO27001 / SOC2.' },
-              ].map((item, i) => (
-                <div key={i} className="rounded-[2rem] bg-white/70 backdrop-blur-md ring-1 ring-white/60 p-10 flex gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 shadow-sm">
-                  <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0">
-                    <item.icon className="w-6 h-6 text-[#9780ED]" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-slate-900 mb-2 tracking-tight">{item.title}</h3>
-                    <p className="text-slate-500 font-light leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        {/* Features Bento Box */}
-        <section id="features" className="bg-white relative rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:70, overflow:'hidden'}}>
-          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex flex-col justify-center">
-            <div className="max-w-3xl mx-auto text-center mb-6">
-              <h2 className="text-3xl lg:text-4xl font-semibold mb-3 text-slate-900 tracking-tight">מה טינקרבל עושה בשטח?</h2>
-              <p className="text-lg text-slate-500 font-light leading-relaxed mb-1">
-                עוזרת לביקורת תהליכים ולהגדלת רווחיות המלון,
-              </p>
-              <p className="text-lg text-slate-700 font-semibold">
-                בלי לחפש. בלי לרדוף. בלי כאב ראש.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[210px]">
-              <div className="md:col-span-2 row-span-2 rounded-[2.5rem] bg-slate-50 p-6 lg:p-8 flex flex-col relative overflow-hidden group ring-1 ring-slate-900/5">
-                <div className="relative z-10 max-w-lg flex items-center gap-4 mb-4">
-                  <div className="w-11 h-11 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0">
-                    <Activity className="w-5 h-5 text-[#9780ED] animate-heartbeat" />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-slate-900 tracking-tight">מנתחת נתוני Revenue Leakage בזמן אמת</h3>
+                {/* Right — Title */}
+                <div className="lg:col-span-3 flex flex-col justify-center text-right">
+                  <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">איך טינקרבל עובדת?</h2>
+                  <p className="text-xl text-slate-500 font-light leading-relaxed mb-2">ללא התקנות מורכבות. המערכת מתחברת מאחורי הקלעים ומתחילה לעבוד.</p>
+                  <p className="text-2xl font-semibold text-slate-600">תוך שעות, לא שבועות</p>
                 </div>
 
-                <div className="absolute right-0 bottom-0 w-full h-[90%] bg-white rounded-t-3xl shadow-[0_-20px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 px-8 pt-8 flex flex-col transform translate-y-28 group-hover:translate-y-20 transition-transform duration-700 overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-white/40 via-white/20 to-transparent z-10 pointer-events-none"></div>
-                  <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white/40 to-transparent z-10 pointer-events-none"></div>
-
-                  <div className="relative" style={{height: '312px', perspective: '600px', perspectiveOrigin: '50% 0%'}}>
-                  <div style={{transform: 'rotateY(15deg) rotate(-4deg)', transformOrigin: 'left center', transformStyle: 'preserve-3d', width: '100%', height: '312px', position: 'relative'}}>
+                {/* Left — Card 1: Steps */}
+                <div className="lg:col-span-9 flex items-center">
+                  <div className="w-full rounded-[2rem] bg-white/60 backdrop-blur-xl ring-1 ring-white/40 shadow-[0_8px_40px_rgba(91,45,193,0.08)] p-10 flex flex-col gap-6">
                     {[
-                      [
-                        { side: 'end', text: 'חדר 304 סומן כאי-הגעה. לחייב את הכרטיס?' },
-                        { side: 'start', text: 'כן, חיוב בוצע בהצלחה (₪1,200).' },
-                        { side: 'end', text: 'זוהתה עזיבה מאוחרת בחדר 112 ללא חיוב.' },
-                        { side: 'start', text: 'נוספה תוספת חצי יום לחשבון (₪350).' },
-                      ],
-                      [
-                        { side: 'end', text: 'הנחת צוות (100%) הוזנה בחדר 401. לאשר?' },
-                        { side: 'start', text: 'לא, נדרש אישור מנכ״ל. ההנחה בוטלה.' },
-                        { side: 'end', text: 'שגיאת סליקה בחדר 218 – כרטיס פג תוקף.' },
-                        { side: 'start', text: 'נשלחה בקשת עדכון פרטי תשלום לאורח.' },
-                      ],
-                      [
-                        { side: 'end', text: 'חדר 315 – Late Check-Out ללא חיוב נוסף.' },
-                        { side: 'start', text: 'חויב תוספת 3 שעות: ₪280. עודכן בחשבון.' },
-                        { side: 'end', text: 'הנחה של 30% הוזנה בחדר 502 ללא קוד.' },
-                        { side: 'start', text: 'התרעה נשלחה למנהל. ההנחה הוקפאה.' },
-                      ],
-                    ].map((frame, frameIdx) => (
-                      <div
-                        key={frameIdx}
-                        className={`chat-frame chat-frame-${frameIdx + 7} flex flex-col justify-between h-full py-2`}
-                      >
-                        {frame.map((msg, i) => (
-                          <div key={i} className={`${msg.side === 'end' ? 'self-end bg-[#9780ED] text-white rounded-tr-none' : 'self-start bg-slate-50 text-slate-700 ring-1 ring-slate-200 rounded-tl-none'} py-3 px-6 rounded-2xl shadow-sm text-[15px] font-medium w-fit max-w-[85%]`}>
-                            {msg.text}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                    {[4,1,6,2,7,3,5].map((n, i) => (
-                      <div
-                        key={`screenshot-${n}`}
-                        className={`chat-frame chat-frame-${i}`}
-                        style={{zIndex: 1}}
-                      >
-                        <img
-                          src={`/screenshots/${n}.png`}
-                          alt={`screenshot ${n}`}
-                          style={{width:'100%', height:'100%', objectFit:'cover', borderRadius:'12px', display:'block'}}
-                        />
+                      { num: "01", title: "התממשקות (API)", desc: <>חיבור שקוף וישיר למערכת ה-PMS שלכם — <span className="font-semibold text-slate-700">אופטימה של פריוריטי</span> ו-<span className="font-semibold text-slate-700">Oracle OPERA Cloud</span>. תהליך של מס׳ דקות ולא משבית את המלון לרגע.</> },
+                      { num: "02", title: "התאמה אישית", desc: "סשן קצרצר לבחירת ההתרעות הקריטיות מתוך מאגר של למעלה מ-50 תרחישים עסקיים שונים." },
+                      { num: "03", title: "התחלת עבודה", desc: "Tinkerbell מתחילה לסרוק, לנטר ולשלוח התרעות בזמן אמת לצוותים הרלוונטיים." }
+                    ].map((step, i) => (
+                      <div key={`step-${i}`} className="rounded-2xl bg-white/80 ring-1 ring-slate-100 p-7 flex items-start gap-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                        <div className="w-14 h-14 rounded-xl bg-[#F8F6FE] ring-1 ring-[#9780ED]/20 flex items-center justify-center text-xl font-bold text-[#5B2DC1] shrink-0">
+                          {step.num}
+                        </div>
+                        <div>
+                          <p className="text-lg font-semibold text-slate-900 leading-snug mb-1">{step.title}</p>
+                          <p className="text-base text-slate-500 font-light leading-relaxed">{step.desc}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2 — slides up over card 1 */}
+          <div className="sticky top-0 h-screen flex items-center" style={{zIndex: 1}}>
+            <div className="max-w-[88rem] mx-auto px-6 lg:px-8 w-full">
+              <div className="grid lg:grid-cols-12 gap-12">
+                <div className="lg:col-span-3" />
+                <div className="lg:col-span-9">
+                  <div className="w-full rounded-[2rem] bg-white/60 backdrop-blur-xl ring-1 ring-white/40 shadow-[0_12px_48px_rgba(91,45,193,0.12)] p-10 flex flex-col gap-6">
+                    {[
+                      { icon: Zap, title: 'מנוע AI ייעודי למלונאות', desc: 'ניתוח תהליכים תפעוליים ופיננסיים ע"י זיהוי חריגות וניתוח דפוסים מבוסס נתונים.' },
+                      { icon: Lightbulb, title: 'בסיס ידע מקצועי מובנה', desc: 'מתודולוגיות בקרה ותפעול מעולם המלונאות, שהוטמעו כחוקים ופיצ\'רים חכמים.' },
+                      { icon: BarChart3, title: 'ארכיטקטורה מודולרית וסקלאבילית', desc: 'תשתית מתקדמת לעיבוד נתונים בזמן אמת וניטור תהליכים.' },
+                      { icon: ShieldCheck, title: 'אבטחת מידע ברמה ארגונית', desc: 'עמידה בתקנים מחמירים, כולל הסמכות ISO27001 / SOC2.' },
+                    ].map((item, i) => (
+                      <div key={`tech-${i}`} className="rounded-2xl bg-white/80 ring-1 ring-slate-100 p-7 flex items-start gap-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                        <div className="w-14 h-14 rounded-xl bg-[#F8F6FE] ring-1 ring-[#9780ED]/20 flex items-center justify-center shrink-0">
+                          <item.icon className="w-6 h-6 text-[#5B2DC1]" />
+                        </div>
+                        <div>
+                          <p className="text-lg font-semibold text-slate-900 leading-snug mb-1">{item.title}</p>
+                          <p className="text-base text-slate-500 font-light leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div className="row-span-2 relative overflow-hidden rounded-[2.5rem] bg-slate-50 ring-1 ring-slate-900/5 h-full">
-                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-slate-50 to-transparent z-10 pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-slate-50 to-transparent z-10 pointer-events-none"></div>
+        {/* What Tinkerbell Does — duplicated section */}
+        <section className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:60}}>
+          <div className="absolute inset-0 z-0" style={{background: 'radial-gradient(125% 125% at 50% 10%, #fff 40%, #9780ED 100%)'}}></div>
+          <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex items-center relative z-10">
+            <div className="grid lg:grid-cols-12 gap-12 w-full h-[calc(100%-6rem)]">
+
+              {/* Right — Sticky title + steps */}
+              <div className="lg:col-span-7 flex flex-col justify-center text-right">
+                <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">מה טינקרבל עושה בשטח?</h2>
+                <p className="text-xl text-slate-500 font-light leading-relaxed mb-2">ללא התקנות מורכבות. המערכת מתחברת מאחורי הקלעים ומתחילה לעבוד.</p>
+                <p className="text-2xl font-semibold text-slate-600 mb-8">תוך שעות, לא שבועות</p>
+
+                {/* Steps 1-2-3 horizontal */}
+                <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr_auto] gap-3 items-stretch">
+                  {[
+                    { num: "01", title: "התממשקות (API)", desc: <>חיבור שקוף וישיר למערכת ה-PMS שלכם — <span className="font-semibold text-slate-700">אופטימה של פריוריטי</span> ו-<span className="font-semibold text-slate-700">Oracle OPERA Cloud</span>. תהליך של מס׳ דקות ולא משבית את המלון לרגע.</> },
+                    { num: "02", title: "התאמה אישית", desc: "סשן קצרצר לבחירת ההתרעות הקריטיות מתוך מאגר של למעלה מ-50 תרחישים עסקיים שונים." },
+                    { num: "03", title: "התחלת עבודה", desc: "Tinkerbell מתחילה לסרוק, לנטר ולשלוח התרעות בזמן אמת לצוותים הרלוונטיים." }
+                  ].flatMap((step, i) => [
+                    <div key={`step-${i}`} className="rounded-2xl bg-white/80 ring-1 ring-slate-100 p-4 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 self-stretch">
+                      <div className="w-10 h-10 rounded-xl bg-[#F8F6FE] ring-1 ring-[#9780ED]/20 flex items-center justify-center text-base font-bold text-[#5B2DC1] shrink-0">
+                        {step.num}
+                      </div>
+                      <p className="text-sm font-semibold text-slate-900 leading-snug">{step.title}</p>
+                      <p className="text-xs text-slate-500 font-light leading-relaxed">{step.desc}</p>
+                    </div>,
+                    <div key={`arrow-${i}`} className="w-9 h-9 rounded-full bg-white/80 ring-1 ring-[#9780ED]/20 flex items-center justify-center shadow-sm self-center">
+                      <ArrowLeft className="w-4 h-4 text-[#9780ED]" />
+                    </div>
+                  ])}
+                </div>
+              </div>
+
+              {/* Left — Vertical scrolling cards */}
+              <div className="lg:col-span-5 relative overflow-hidden h-full" style={{maskImage: 'linear-gradient(to bottom, transparent, black 8%, black 92%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 8%, black 92%, transparent)'}}>
+
                 <div className="flex flex-col animate-chat-vertical">
                   {[1, 2].map(set => (
                     <div key={set} className="flex flex-col gap-4 p-4" aria-hidden={set === 2}>
+                      {/* Technology + Features — unified style */}
                       {[
-                        { icon: Activity, title: 'ניטור 24/7 בזמן אמת', benefit: 'מאפשרת Cost Control יומי' },
-                        { icon: BellRing, title: 'התראות חכמות – Real-Time Alerts', benefit: 'מידע בזמן = תגובה מהירה = פחות הפסד' },
-                        { icon: ShieldCheck, title: 'שקיפות מלאה', benefit: 'תדעו בכל רגע איפה אתם עומדים' },
-                        { icon: Mail, title: 'מייל יומי למלונאי', benefit: 'חוסך זמן וכסף' },
-                        { icon: Lightbulb, title: 'OJT – הדרכה תוך כדי עבודה', benefit: 'בלי הכשרות ממושכות' },
-                        { icon: TrendingUp, title: 'צמצום הפסדים והגדלת רווחים', benefit: 'מצמצמת חריגות ומשפרת GOP' },
-                      ].map((item, i) => (
-                        <div key={i} className="rounded-2xl bg-white ring-1 ring-slate-100 p-4 flex items-center gap-4 shrink-0 transition-colors duration-200 hover:bg-slate-100">
-                          <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center shrink-0">
-                            <item.icon className="w-4 h-4 text-[#9780ED]" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold text-slate-900 leading-snug">{item.title}</p>
-                            <p className="text-xs text-[#9780ED] font-medium mt-0.5">{item.benefit}</p>
+                        { icon: Zap, title: 'מנוע AI ייעודי למלונאות', desc: 'ניתוח תהליכים תפעוליים ופיננסיים ע"י זיהוי חריגות וניתוח דפוסים מבוסס נתונים.' },
+                        { icon: Lightbulb, title: 'בסיס ידע מקצועי מובנה', desc: 'מתודולוגיות בקרה ותפעול מעולם המלונאות, שהוטמעו כחוקים ופיצ\'רים חכמים.' },
+                        { icon: Mail, title: 'מייל יומי למלונאי', desc: 'סיכום יומי אוטומטי שחוסך זמן וכסף — ישירות לתיבת הדואר.', highlight: true },
+                        { icon: BarChart3, title: 'ארכיטקטורה מודולרית וסקלאבילית', desc: 'תשתית מתקדמת לעיבוד נתונים בזמן אמת וניטור תהליכים.' },
+                        { icon: Activity, title: 'ניטור 24/7 בזמן אמת', desc: 'מאפשרת Cost Control יומי — מידע בזמן, תגובה מהירה, פחות הפסד.' },
+                        { icon: Smartphone, title: 'אפליקציה ייעודית לביקורת', desc: 'ריכוז התראות, סימון טופל, הערות ואישורים ו׳מבט על׳ שיפור לאורך זמן.', highlight: true },
+                        { icon: ShieldCheck, title: 'אבטחת מידע ברמה ארגונית', desc: 'עמידה בתקנים מחמירים, כולל הסמכות ISO27001 / SOC2.' },
+                        { icon: PieChart, title: 'דוחות חכמים', desc: 'ברמת מלון, רשת ותחומי ביקורת — למחקר ומעקב אחרי תופעות לאורך זמן.', highlight: true },
+                        { icon: BellRing, title: 'התראות חכמות – Real-Time Alerts', desc: 'מידע בזמן = תגובה מהירה = פחות הפסד. התרעות ישירות לצוותים הרלוונטיים.' },
+                        { icon: ShieldCheck, title: 'שקיפות מלאה', desc: 'תדעו בכל רגע איפה אתם עומדים — בקרה חכמה על כל פרט פיננסי.' },
+                        { icon: Users, title: 'חוכמת ההמונים', desc: 'הידע והניסיון הנצבר מעבודת עומק עם אופימה במלונות בישראל, אצלך מהיום הראשון.', highlight: true },
+                        { icon: Lightbulb, title: 'OJT – הדרכה תוך כדי עבודה', desc: 'בלי הכשרות ממושכות — הצוות לומד תוך כדי התפעול היומיומי.' },
+                        { icon: TrendingUp, title: 'צמצום הפסדים והגדלת רווחים', desc: 'מצמצמת חריגות ומשפרת GOP — תוצאות מדידות מהיום הראשון.' },
+                        { icon: BellRing, title: 'גמישות להוספת התראות', desc: 'אפשרות להתאמת המערכת למלון שלך באמצעות סט התראות ייחודיות.', highlight: true },
+                      ].reduce((acc, item) => {
+                        if (item.highlight) acc.highlightCount = (acc.highlightCount || 0) + 1;
+                        acc.items.push({ ...item, highlightIndex: item.highlight ? acc.highlightCount : 0 });
+                        return acc;
+                      }, { items: [], highlightCount: 0 }).items.map((item, i) => (
+                        <div key={`card-${i}`} className="relative">
+                          {item.highlight && (<>
+                            <div className="absolute inset-0 rounded-2xl pointer-events-none animate-highlight-ripple" style={{ animationDelay: `${(item.highlightIndex - 1) * 1.5}s` }} />
+                            <div className="absolute inset-0 rounded-2xl pointer-events-none animate-highlight-ripple-2" style={{ animationDelay: `${(item.highlightIndex - 1) * 1.5}s` }} />
+                            <div className="absolute inset-0 rounded-2xl pointer-events-none animate-highlight-ripple-3" style={{ animationDelay: `${(item.highlightIndex - 1) * 1.5}s` }} />
+                          </>)}
+                          <div className={`relative rounded-2xl bg-white/80 p-5 flex items-start gap-5 shrink-0 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 ${item.highlight ? 'animate-highlight-border' : 'ring-1 ring-slate-100'}`} style={item.highlight ? { animationDelay: `${(item.highlightIndex - 1) * 1.5}s` } : {}}>
+                            <div className="w-10 h-10 rounded-xl bg-[#F8F6FE] flex items-center justify-center shrink-0">
+                              <item.icon className="w-5 h-5 text-[#9780ED]" />
+                            </div>
+                            <div>
+                              <p className="text-base font-semibold text-slate-900 leading-snug mb-1">{item.title}</p>
+                              <p className={`text-sm leading-relaxed ${item.highlight ? 'text-slate-700 font-medium' : 'text-slate-500 font-light'}`}>{item.desc}</p>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -832,6 +923,7 @@ export default function App() {
                   ))}
                 </div>
               </div>
+
             </div>
           </div>
         </section>
@@ -843,10 +935,10 @@ export default function App() {
               <h2 className="text-4xl lg:text-5xl font-semibold mb-3 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
               <p className="text-lg text-slate-500 font-light">רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה.</p>
             </div>
-            <div className="max-w-[88rem] mx-auto w-full">
+            <div className="max-w-[80%] lg:max-w-[71rem] mx-auto w-full">
               <div className="w-full bg-white rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[-1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                  <div className="relative h-[220px] lg:h-[340px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group">
+                  <div className="relative h-[330px] lg:h-[510px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group">
                     <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1600" alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
                     <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-[#F8F6FE] max-w-[180px] group-hover:-translate-y-2 transition-transform duration-500">
@@ -857,6 +949,12 @@ export default function App() {
                   <div className="p-4 lg:p-8 lg:pr-0">
                     <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
                     <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">כשאתה מנהל רשת מלונות מרחוק, אתה צריך מערכת שקופה לחלוטין - החיים לפני ואחרי טינקרבל זה עולם אחר.</h3>
+                    <div className="overflow-hidden transition-all duration-500 ease-in-out" style={{maxHeight: expandedTestimonial === 1 ? '300px' : '0', opacity: expandedTestimonial === 1 ? 1 : 0}}>
+                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית נולום ארגמנטום, currentlyא,, lupaנכי, lupaנכי, מונמנטום. קולהע צופמרספי, currentlyנס, lupaנכי. הקליקו סתרוכט, lupaנכי. סוּמּה לוקוס, currentlyנס, lupaנכי. הקליקו סתרוכט. מוסדן, currentlyנס. הקליקו סתרוכט, lupaנכי, מונמנטום. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סטמוקס, currentlyנס, lupaנכי. הקליקו סתרוכט, lupaנכי, מונמנטום של, currentlyנס.</p>
+                    </div>
+                    <button onClick={() => setExpandedTestimonial(expandedTestimonial === 1 ? null : 1)} className="text-[#9780ED] text-sm font-semibold mb-5 flex items-center gap-1.5 hover:gap-2.5 transition-all">
+                      {expandedTestimonial === 1 ? 'סגור' : 'קראו את הסיפור המלא'} <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedTestimonial === 1 ? 'rotate-90' : ''}`} />
+                    </button>
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shrink-0"><img src="/partners/בת חן.jpg" alt="בת חן ישועה" className="w-full h-full object-cover" /></div>
                       <div><div className="font-bold text-slate-900">בת חן ישועה</div><div className="text-sm text-slate-500">בעלים ומנכ"לית, רשת מלונות מטיילים</div></div>
@@ -871,18 +969,24 @@ export default function App() {
         {/* TESTIMONIAL 2 */}
         <section className="rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:81, overflow:'hidden', background:'transparent'}}>
           <div className="h-full flex flex-col justify-center px-6 lg:px-8 -translate-y-16">
-            <div className="max-w-[88rem] mx-auto w-full">
+            <div className="max-w-[80%] lg:max-w-[71rem] mx-auto w-full">
               <div className="w-full bg-white rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                   <div className="p-4 lg:p-8 lg:pl-0 order-2 lg:order-1">
                     <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
                     <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">טינקרבל הפכה חלום למציאות! אם עד כה בזבזנו שעות ע"ג שעות בחיפוש נתונים, היא מראה לנו את כל הנתונים הנחוצים בזמן אמת, וחוסכת לנו בזבוז זמן ואנרגיה מיותרים.</h3>
+                    <div className="overflow-hidden transition-all duration-500 ease-in-out" style={{maxHeight: expandedTestimonial === 2 ? '300px' : '0', opacity: expandedTestimonial === 2 ? 1 : 0}}>
+                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סטמוקס, currentlyנס, lupaנכי. הקליקו סתרוכט, lupaנכי, מונמנטום של, currentlyנס. נולום ארגמנטום, currentlyא,, lupaנכי. הקליקו סתרוכט, lupaנכי. סוּמּה לוקוס, currentlyנס, lupaנכי. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית נולום ארגמנטום, currentlyא,, lupaנכי, מונמנטום. קולהע צופמרספי, currentlyנס, lupaנכי של, currentlyנס.</p>
+                    </div>
+                    <button onClick={() => setExpandedTestimonial(expandedTestimonial === 2 ? null : 2)} className="text-[#9780ED] text-sm font-semibold mb-5 flex items-center gap-1.5 hover:gap-2.5 transition-all">
+                      {expandedTestimonial === 2 ? 'סגור' : 'קראו את הסיפור המלא'} <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedTestimonial === 2 ? 'rotate-90' : ''}`} />
+                    </button>
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shrink-0"><img src="/partners/קובי.jpg" alt="קובי גוטמן" className="w-full h-full object-cover" /></div>
                       <div><div className="font-bold text-slate-900">קובי גוטמן</div><div className="text-sm text-slate-500">סמנכ"ל כספים, מלונות מצודות דויד וממילא</div></div>
                     </div>
                   </div>
-                  <div className="relative h-[220px] lg:h-[340px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group order-1 lg:order-2">
+                  <div className="relative h-[330px] lg:h-[510px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group order-1 lg:order-2">
                     <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1600" alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
                     <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-[#F8F6FE] max-w-[180px] group-hover:-translate-y-2 transition-transform duration-500">
@@ -899,10 +1003,10 @@ export default function App() {
         {/* TESTIMONIAL 3 */}
         <section className="rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:82, overflow:'hidden', background:'transparent'}}>
           <div className="h-full flex flex-col justify-center px-6 lg:px-8">
-            <div className="max-w-[88rem] mx-auto w-full">
+            <div className="max-w-[80%] lg:max-w-[71rem] mx-auto w-full">
               <div className="w-full bg-slate-50 rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[-1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                  <div className="relative h-[220px] lg:h-[340px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group">
+                  <div className="relative h-[330px] lg:h-[510px] w-full rounded-[1.5rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-200 group">
                     <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1600" alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
                     <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-[#F8F6FE] max-w-[180px] group-hover:-translate-y-2 transition-transform duration-500">
@@ -913,6 +1017,12 @@ export default function App() {
                   <div className="p-4 lg:p-8 lg:pr-0">
                     <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
                     <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">טינקרבל מציבה למנהל את כל הכשלים מול העיניים, ונותנת שליטה שלא הייתה לנו קודם.</h3>
+                    <div className="overflow-hidden transition-all duration-500 ease-in-out" style={{maxHeight: expandedTestimonial === 3 ? '300px' : '0', opacity: expandedTestimonial === 3 ? 1 : 0}}>
+                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סטמוקס, currentlyנס, lupaנכי. הקליקו סתרוכט, lupaנכי, מונמנטום של, currentlyנס. נולום ארגמנטום, currentlyא,, lupaנכי. סוּמּה לוקוס, currentlyנס, lupaנכי. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית נולום ארגמנטום, currentlyא,, lupaנכי, מונמנטום. קולהע צופמרספי, currentlyנס, lupaנכי של. הקליקו סתרוכט, lupaנכי, מונמנטום של, currentlyנס.</p>
+                    </div>
+                    <button onClick={() => setExpandedTestimonial(expandedTestimonial === 3 ? null : 3)} className="text-[#9780ED] text-sm font-semibold mb-5 flex items-center gap-1.5 hover:gap-2.5 transition-all">
+                      {expandedTestimonial === 3 ? 'סגור' : 'קראו את הסיפור המלא'} <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedTestimonial === 3 ? 'rotate-90' : ''}`} />
+                    </button>
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shrink-0"><img src="/partners/רן.jpg" alt="רן אמיגה" className="w-full h-full object-cover" /></div>
                       <div><div className="font-bold text-slate-900">רן אמיגה</div><div className="text-sm text-slate-500">סמנכ"ל חדשנות וטכנולוגיה, אגודת אכסניות הנוער בישראל אנ"א</div></div>
@@ -920,11 +1030,6 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex justify-center mt-24">
-              <button className="flex items-center gap-2 text-[#9780ED] font-semibold hover:gap-3 transition-all">
-                לכל סיפורי הלקוחות <ChevronRight className="w-4 h-4" />
-              </button>
             </div>
           </div>
         </section>
@@ -939,7 +1044,7 @@ export default function App() {
               <h2 className="text-4xl lg:text-5xl mb-6 tracking-tighter"><span className="font-light">בואו לגלות איך המלון שלכם</span><br/><span className="font-semibold">יכול להרוויח יותר</span></h2>
               <p className="text-xl text-[#EDE8FB] mb-10 font-light max-w-2xl mx-auto">התחילו חודש ניסיון חינם וגלו איך טינקרבל הופכת<br/>נתונים לרווח אמיתי, כבר מהיום הראשון.</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-white text-[#5B2DC1] px-10 py-5 rounded-full text-lg font-semibold hover:scale-105 transition-transform shadow-xl shadow-[#5B2DC1]/20">התחילו חודש ניסיון</button>
+                <button onClick={() => setShowPopup(true)} className="bg-white text-[#5B2DC1] px-10 py-5 rounded-full text-lg font-semibold hover:scale-105 transition-transform shadow-xl shadow-[#5B2DC1]/20">להתנסות במלון שלכם</button>
               </div>
             </div>
 
