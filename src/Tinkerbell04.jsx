@@ -28,6 +28,8 @@ import {
   BedDouble,
   UserX,
   PieChart,
+  Globe,
+  MessageCircle,
   Timer,
   CheckCircle
 } from 'lucide-react';
@@ -81,7 +83,7 @@ export default function App() {
   const isScrollingRef = React.useRef(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [screenshotIndex, setScreenshotIndex] = useState(0);
-  const screenshots = ['/screenshots/1.png', '/screenshots/2.png', '/screenshots/3.png', '/screenshots/4.png', '/screenshots/5.png', '/screenshots/6.png', '/screenshots/7.png'];
+  const screenshots = ['/screenshots2/1.jpg', '/screenshots2/2.jpg', '/screenshots2/3.jpg', '/screenshots2/4.jpg', '/screenshots2/5.jpg', '/screenshots2/6.jpg', '/screenshots2/7.jpg', '/screenshots2/8.jpg'];
   const bulbPos = React.useRef({ x: 0, y: 0 });
   const bulbRef = React.useRef(null);
 
@@ -171,7 +173,7 @@ export default function App() {
     }, 10000);
 
     const screenshotInterval = setInterval(() => {
-      setScreenshotIndex((prev) => (prev + 1) % 7);
+      setScreenshotIndex((prev) => (prev + 1) % 8);
     }, 4000);
 
     return () => {
@@ -633,13 +635,10 @@ export default function App() {
         <section className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:20}}>
           <RippleBackground className="bg-gradient-to-b from-[#F8F6FE] via-white to-[#F8F8F9]">
           <div className="h-full flex flex-col justify-center gap-8 py-8 relative">
-            <div className="max-w-3xl mx-auto text-center px-6 lg:px-8">
+            <div className="max-w-5xl mx-auto text-center px-6 lg:px-8">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-6 text-slate-900 tracking-tight">הכסף נמצא בפרטים הקטנים</h2>
-              <p className="text-xl text-slate-500 font-light leading-relaxed mb-4">
-                בכל מלון קיימות דליפות כסף יומיומיות.
-              </p>
               <p className="text-xl text-slate-500 font-light leading-relaxed">
-                לא בגלל ניהול גרוע - אלא בגלל מורכבות תפעולית,<br/>עומס מידע ומחסור בבקרה חכמה בזמן אמת.
+                בכל מלון קיימות דליפות כסף יומיומיות. לא בגלל ניהול גרוע — אלא בגלל מורכבות תפעולית, עומס מידע ומחסור בבקרה חכמה בזמן אמת.
               </p>
             </div>
 
@@ -659,12 +658,12 @@ export default function App() {
                         { icon: Percent, anim: "animate-heartbeat", title: "עמלות יתר ל-OTA", desc: "תשלום עמלות עודפות לסוכנים (כמו Booking או Agoda) על הזמנות שבוטלו או קוצרו ברגע האחרון.", accent: "border-[#9780ED]" },
                         { icon: CreditCard, anim: "animate-pulse", title: "שגיאות סליקה", desc: "כרטיסי אשראי שנדחו, פגו תוקף או חיובים שבוטלו מבלי שהקבלה טיפלה בגבייה חלופית מהאורח.", accent: "border-amber-400" },
                       ].map((item, i) => (
-                        <div key={i} dir="rtl" className={`w-[300px] md:w-[360px] p-7 md:p-8 rounded-[1.5rem] bg-white/60 backdrop-blur-2xl ring-1 ring-white/40 shadow-[0_8px_40px_rgba(91,45,193,0.08)] hover:bg-white/75 hover:ring-white/60 hover:shadow-[0_16px_48px_rgba(91,45,193,0.12)] hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right border-r-[3px] ${item.accent}`}>
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EDE8FB] to-[#D4CAFE] flex items-center justify-center mb-5 mr-auto">
-                            <item.icon className={`w-5 h-5 text-[#5B2DC1] ${item.anim}`} />
+                        <div key={i} dir="rtl" className={`w-[300px] md:w-[360px] p-5 md:p-6 rounded-[1.5rem] bg-white/60 backdrop-blur-2xl ring-1 ring-white/40 shadow-[0_8px_40px_rgba(91,45,193,0.08)] hover:bg-white/75 hover:ring-white/60 hover:shadow-[0_16px_48px_rgba(91,45,193,0.12)] hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right border-r-[3px] ${item.accent}`}>
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#EDE8FB] to-[#D4CAFE] flex items-center justify-center mb-3 mr-auto">
+                            <item.icon className={`w-4 h-4 text-[#5B2DC1] ${item.anim}`} />
                           </div>
-                          <h3 className="text-xl font-semibold text-slate-900 mb-3 tracking-tight">{item.title}</h3>
-                          <p className="text-slate-500 leading-relaxed text-base font-light">{item.desc}</p>
+                          <h3 className="text-lg font-semibold text-slate-900 mb-2 tracking-tight">{item.title}</h3>
+                          <p className="text-slate-500 leading-relaxed text-sm font-light">{item.desc}</p>
                         </div>
                       ))}
                     </div>
@@ -686,12 +685,12 @@ export default function App() {
                         { icon: BedDouble, anim: "animate-float-subtle", title: "שדרוגים 'בחינם'", desc: "מתן חדרים בקטגוריות פרמיום או סוויטות ללא תוספת תשלום (Upsell) וללא אישור מוקדם.", accent: "border-[#9780ED]" },
                         { icon: UserX, anim: "animate-pulse", title: "פרופילים כפולים", desc: "כפילויות במערכת (PMS) שנועלות חדרים פנויים למכירה ומונעות הזמנות חדשות.", accent: "border-amber-400" },
                       ].map((item, i) => (
-                        <div key={i} dir="rtl" className={`w-[300px] md:w-[360px] p-7 md:p-8 rounded-[1.5rem] bg-white/60 backdrop-blur-2xl ring-1 ring-white/40 shadow-[0_8px_40px_rgba(91,45,193,0.08)] hover:bg-white/75 hover:ring-white/60 hover:shadow-[0_16px_48px_rgba(91,45,193,0.12)] hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right border-r-[3px] ${item.accent}`}>
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EDE8FB] to-[#D4CAFE] flex items-center justify-center mb-5 mr-auto">
-                            <item.icon className={`w-5 h-5 text-[#5B2DC1] ${item.anim}`} />
+                        <div key={i} dir="rtl" className={`w-[300px] md:w-[360px] p-5 md:p-6 rounded-[1.5rem] bg-white/60 backdrop-blur-2xl ring-1 ring-white/40 shadow-[0_8px_40px_rgba(91,45,193,0.08)] hover:bg-white/75 hover:ring-white/60 hover:shadow-[0_16px_48px_rgba(91,45,193,0.12)] hover:-translate-y-1 transition-all duration-500 shrink-0 cursor-default text-right border-r-[3px] ${item.accent}`}>
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#EDE8FB] to-[#D4CAFE] flex items-center justify-center mb-3 mr-auto">
+                            <item.icon className={`w-4 h-4 text-[#5B2DC1] ${item.anim}`} />
                           </div>
-                          <h3 className="text-xl font-semibold text-slate-900 mb-3 tracking-tight">{item.title}</h3>
-                          <p className="text-slate-500 leading-relaxed text-base font-light">{item.desc}</p>
+                          <h3 className="text-lg font-semibold text-slate-900 mb-2 tracking-tight">{item.title}</h3>
+                          <p className="text-slate-500 leading-relaxed text-sm font-light">{item.desc}</p>
                         </div>
                       ))}
                     </div>
@@ -705,7 +704,7 @@ export default function App() {
                 התוצאה - איבוד הכנסות ורווח בהיקף משמעותי בין 3–7% מהמחזור.
               </p>
               <p className="text-xl text-slate-500 font-light leading-relaxed">
-                טינקרבל פועלת 24/7 ומאפשרת למלון להתנהל לפי סטנדרט ביצועי ברור, אחיד ורווחי.
+                טינקרבל פועלת 24/7 ומאפשרת למלון להתנהל לפי סטנדרט ביצועי אחיד ורווחי.
               </p>
             </div>
           </div>
@@ -911,6 +910,8 @@ export default function App() {
                         { icon: Lightbulb, title: 'OJT – הדרכה תוך כדי עבודה', desc: 'בלי הכשרות ממושכות — הצוות לומד תוך כדי התפעול היומיומי.' },
                         { icon: TrendingUp, title: 'צמצום הפסדים והגדלת רווחים', desc: 'מצמצמת חריגות ומשפרת GOP — תוצאות מדידות מהיום הראשון.' },
                         { icon: BellRing, title: 'גמישות להוספת התראות', desc: 'אפשרות להתאמת המערכת למלון שלך באמצעות סט התראות ייחודיות.', highlight: true },
+                        { icon: Globe, title: 'מערכת רב לשונית', desc: 'תמיכה מלאה בעברית, אנגלית ושפות נוספות — מותאמת לרשתות בינלאומיות.' },
+                        { icon: MessageCircle, title: 'תמיכה בצ׳אט מתוך המערכת', desc: 'תקשורת ישירה עם הצוות — שאלות, הערות ובירורים בזמן אמת.' },
                       ].reduce((acc, item) => {
                         if (item.highlight) acc.highlightCount = (acc.highlightCount || 0) + 1;
                         acc.items.push({ ...item, highlightIndex: item.highlight ? acc.highlightCount : 0 });
