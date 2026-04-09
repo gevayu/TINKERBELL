@@ -111,13 +111,13 @@ export default function App() {
     };
   }, [mousePos]);
 
-  // easeInOutCubic smooth scroll
-  const smoothScrollTo = React.useCallback((targetY, duration = 900) => {
+  // easeOutCubic smooth scroll
+  const smoothScrollTo = React.useCallback((targetY, duration = 450) => {
     const startY = window.scrollY;
     const diff = targetY - startY;
     if (Math.abs(diff) < 2) return;
     const startTime = performance.now();
-    const ease = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
+    const ease = (t) => 1 - Math.pow(1 - t, 3);
     isScrollingRef.current = true;
     const step = (now) => {
       const elapsed = now - startTime;
@@ -126,7 +126,7 @@ export default function App() {
       if (progress < 1) {
         requestAnimationFrame(step);
       } else {
-        setTimeout(() => { isScrollingRef.current = false; }, 50);
+        isScrollingRef.current = false;
       }
     };
     requestAnimationFrame(step);
@@ -159,7 +159,7 @@ export default function App() {
       const next = e.deltaY > 0
         ? Math.min(10, currentSec + 1)
         : Math.max(0, currentSec - 1);
-      smoothScrollTo(next * window.innerHeight, 900);
+      smoothScrollTo(next * window.innerHeight);
     };
     window.addEventListener('wheel', handleWheel, { passive: false });
 
@@ -945,7 +945,7 @@ export default function App() {
 
         {/* TESTIMONIAL 1 */}
         <section id="testimonials" className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:80, overflow:'hidden'}}>
-          <div className="h-full flex flex-col justify-center px-6 lg:px-8 -translate-y-28">
+          <div className="h-full flex flex-col justify-center px-6 lg:px-8">
             <div className="max-w-2xl mx-auto text-center mb-10">
               <h2 className="text-4xl lg:text-5xl font-semibold mb-3 text-slate-900 tracking-tight">השותפים שלנו להצלחה</h2>
               <p className="text-lg text-slate-500 font-light">רשתות המלונאות המובילות כבר עברו לניהול חכם ומבוסס דאטה.</p>
@@ -982,8 +982,8 @@ export default function App() {
         </section>
 
         {/* TESTIMONIAL 2 */}
-        <section className="rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:81, overflow:'hidden', background:'transparent'}}>
-          <div className="h-full flex flex-col justify-center px-6 lg:px-8 -translate-y-16">
+        <section className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:81, overflow:'hidden'}}>
+          <div className="h-full flex flex-col justify-center px-6 lg:px-8">
             <div className="max-w-[80%] lg:max-w-[71rem] mx-auto w-full">
               <div className="w-full bg-white rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
@@ -1016,7 +1016,7 @@ export default function App() {
         </section>
 
         {/* TESTIMONIAL 3 */}
-        <section className="rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:82, overflow:'hidden', background:'transparent'}}>
+        <section className="bg-slate-100 rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:82, overflow:'hidden'}}>
           <div className="h-full flex flex-col justify-center px-6 lg:px-8">
             <div className="max-w-[80%] lg:max-w-[71rem] mx-auto w-full">
               <div className="w-full bg-slate-50 rounded-[2rem] lg:rounded-[3rem] p-4 lg:p-6 ring-1 ring-slate-900/5 shadow-[0_15px_40px_rgba(0,0,0,0.06)] rotate-[-1deg] hover:rotate-0 transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
