@@ -81,6 +81,7 @@ export default function App() {
   const [showPopup, setShowPopup] = useState(false);
   const [expandedTestimonial, setExpandedTestimonial] = useState(null);
   const isScrollingRef = React.useRef(false);
+  const counterTimeoutRef = React.useRef(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [screenshotIndex, setScreenshotIndex] = useState(0);
   const screenshots = ['/screenshots2/1.jpg', '/screenshots2/2.jpg', '/screenshots2/3.jpg', '/screenshots2/4.jpg', '/screenshots2/5.jpg', '/screenshots2/6.jpg', '/screenshots2/7.jpg', '/screenshots2/8.jpg'];
@@ -112,7 +113,7 @@ export default function App() {
   }, [mousePos]);
 
   // easeOutCubic smooth scroll
-  const smoothScrollTo = React.useCallback((targetY, duration = 450) => {
+  const smoothScrollTo = React.useCallback((targetY, duration = 300) => {
     const startY = window.scrollY;
     const diff = targetY - startY;
     if (Math.abs(diff) < 2) return;
@@ -163,10 +164,13 @@ export default function App() {
     };
     window.addEventListener('wheel', handleWheel, { passive: false });
 
-    const counterInterval = setInterval(() => {
+    const tickCounter = () => {
       const addition = Math.floor(Math.random() * 40) + 10;
       setAccumulatedAmount(prev => prev + addition);
-    }, 15000);
+      counterTimeoutRef.current = setTimeout(tickCounter, 6000 + Math.random() * 5000);
+    };
+    counterTimeoutRef.current = setTimeout(tickCounter, 6000 + Math.random() * 5000);
+    const counterInterval = null;
 
     const alertInterval = setInterval(() => {
       setAlertIndex((prev) => (prev + 1) % alerts.length);
@@ -179,7 +183,7 @@ export default function App() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('wheel', handleWheel);
-      clearInterval(counterInterval);
+      clearTimeout(counterTimeoutRef.current);
       clearInterval(alertInterval);
       clearInterval(screenshotInterval);
     };
@@ -965,7 +969,7 @@ export default function App() {
                     <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
                     <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">כשאתה מנהל רשת מלונות מרחוק, אתה צריך מערכת שקופה לחלוטין - החיים לפני ואחרי טינקרבל זה עולם אחר.</h3>
                     <div className="overflow-hidden transition-all duration-500 ease-in-out" style={{maxHeight: expandedTestimonial === 1 ? '300px' : '0', opacity: expandedTestimonial === 1 ? 1 : 0}}>
-                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית נולום ארגמנטום, currentlyא,, lupaנכי, lupaנכי, מונמנטום. קולהע צופמרספי, currentlyנס, lupaנכי. הקליקו סתרוכט, lupaנכי. סוּמּה לוקוס, currentlyנס, lupaנכי. הקליקו סתרוכט. מוסדן, currentlyנס. הקליקו סתרוכט, lupaנכי, מונמנטום. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סטמוקס, currentlyנס, lupaנכי. הקליקו סתרוכט, lupaנכי, מונמנטום של, currentlyנס.</p>
+                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">טינקרבל בנתה לנו בדיוק את זה. לקחנו את המערכת צעד אחד קדימה - מעבר לניהול בסיסי והשתמשנו בה לייעול ובקרה מלאה על תהליכי העבודה.<br /><br />טינקרבל מאפשרת לנו:<br />• לנהל חכם יותר - כל מה שקורה במלונות, אנחנו רואים בזמן אמת<br />• לאכוף תהליכים - המערכת מוודאת שהעבודה נעשית לפי הסטנדרט שלנו<br />• למנוע בעיות - יום ללא התרעה זה יום מאושר<br />• לבנות תהליכי הדרכה ממוקדים - אם אנחנו רואים תקלות חוזרות אצל עובד מסוים, או סקטור מסוים, אנחנו נכנסים להדרכה מידית.<br /><br />מה שבאמת מייחד את טינקרבל זה השירות והמחשבה.</p>
                     </div>
                     <button onClick={() => setExpandedTestimonial(expandedTestimonial === 1 ? null : 1)} className="text-[#9780ED] text-sm font-semibold mb-5 flex items-center gap-1.5 hover:gap-2.5 transition-all">
                       {expandedTestimonial === 1 ? 'סגור' : 'קראו את הסיפור המלא'} <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedTestimonial === 1 ? 'rotate-90' : ''}`} />
@@ -991,7 +995,7 @@ export default function App() {
                     <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
                     <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">טינקרבל הפכה חלום למציאות! אם עד כה בזבזנו שעות ע"ג שעות בחיפוש נתונים, היא מראה לנו את כל הנתונים הנחוצים בזמן אמת, וחוסכת לנו בזבוז זמן ואנרגיה מיותרים.</h3>
                     <div className="overflow-hidden transition-all duration-500 ease-in-out" style={{maxHeight: expandedTestimonial === 2 ? '300px' : '0', opacity: expandedTestimonial === 2 ? 1 : 0}}>
-                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סטמוקס, currentlyנס, lupaנכי. הקליקו סתרוכט, lupaנכי, מונמנטום של, currentlyנס. נולום ארגמנטום, currentlyא,, lupaנכי. הקליקו סתרוכט, lupaנכי. סוּמּה לוקוס, currentlyנס, lupaנכי. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית נולום ארגמנטום, currentlyא,, lupaנכי, מונמנטום. קולהע צופמרספי, currentlyנס, lupaנכי של, currentlyנס.</p>
+                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">המידע תמיד היה קיים במערכת המלונאית, אבל הבעיה הייתה שהיית צריך להיכנס לדו"ח אחר דו"ח, להוציא נתונים באופן יזום, ולחפש את מה שקרה אתמול. טינקרבל הפכה את כל זה ל-PUSH של ממש! בזכותה, המערכת "דוחפת" לך את המידע כל בוקר וככה אתה מתחיל לטפל בבעיות הקיימות באופן מיידי.<br /><br />אני מקבל בכל יום דו"ח עדכני לאירועי היום, כאשר ההתרעות מנווטות למנהלים המתאימים: מנהל חדרים מקבל התרעות על חדרים לא נקיים, אחראי על התעריפים מקבל התרעות על מחירים מתחת למה שהוא הגדיר, מבקר הכנסות מקבל התרעות על זיכויים שצריך לבדוק - כל אחד מקבל רק את המידע הרלוונטי לו.<br /><br />מאז שטינקרבל הותקנה במלונות שלי החיים שלי השתנו מקצה לקצה.</p>
                     </div>
                     <button onClick={() => setExpandedTestimonial(expandedTestimonial === 2 ? null : 2)} className="text-[#9780ED] text-sm font-semibold mb-5 flex items-center gap-1.5 hover:gap-2.5 transition-all">
                       {expandedTestimonial === 2 ? 'סגור' : 'קראו את הסיפור המלא'} <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedTestimonial === 2 ? 'rotate-90' : ''}`} />
@@ -1033,7 +1037,7 @@ export default function App() {
                     <Quote className="w-8 h-8 text-[#C4B5F7] mb-4" />
                     <h3 className="text-xl lg:text-2xl font-semibold text-slate-900 mb-5 leading-tight tracking-tight">טינקרבל מציבה למנהל את כל הכשלים מול העיניים, ונותנת שליטה שלא הייתה לנו קודם.</h3>
                     <div className="overflow-hidden transition-all duration-500 ease-in-out" style={{maxHeight: expandedTestimonial === 3 ? '300px' : '0', opacity: expandedTestimonial === 3 ? 1 : 0}}>
-                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סטמוקס, currentlyנס, lupaנכי. הקליקו סתרוכט, lupaנכי, מונמנטום של, currentlyנס. נולום ארגמנטום, currentlyא,, lupaנכי. סוּמּה לוקוס, currentlyנס, lupaנכי. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית נולום ארגמנטום, currentlyא,, lupaנכי, מונמנטום. קולהע צופמרספי, currentlyנס, lupaנכי של. הקליקו סתרוכט, lupaנכי, מונמנטום של, currentlyנס.</p>
+                      <p className="text-slate-500 font-light leading-relaxed mb-5 text-base">עם מעל 20 שנה בעולם המלונאות, אני יכולה לומר בביטחון שטינקרבל שינתה את הדרך שבה אנחנו מנהלים ומתנהלים. בתוך שנה בלבד קיבלנו שקיפות שלא הייתה אפשרית קודם: המערכת מציגה בזמן אמת כשלים בתהליכי הכנסות, חריגות, זיכויים, הנחות ודוחות שבעבר פשוט לא ניתן היה להוציא מה-PMS.<br /><br />כמנהלי מטה אנחנו רואים שיפור אמיתי בתהליכי העבודה בין האכסניות, כולל השוואות מדויקות בין סניפים, ניתוח נקודות אחוז, ומעקב אחר היקף התראות בכל אתר. יש לנו סוג של "משקפת" ברורה על מה שקורה בשטח, גם בדברים שעובדים בקו הייצור לא תמיד שמים לב אליהם.<br /><br />מעבר למערכת עצמה, אנחנו מקבלים מצוות טינקרבל רמת השירות יוצאת דופן. הצוות תמיד אומר "כן", חושב מחוץ לקופסה, מפתח פתרונות מותאמים ומגיב במהירות ובמקצועיות חסרת תקדים.</p>
                     </div>
                     <button onClick={() => setExpandedTestimonial(expandedTestimonial === 3 ? null : 3)} className="text-[#9780ED] text-sm font-semibold mb-5 flex items-center gap-1.5 hover:gap-2.5 transition-all">
                       {expandedTestimonial === 3 ? 'סגור' : 'קראו את הסיפור המלא'} <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedTestimonial === 3 ? 'rotate-90' : ''}`} />
