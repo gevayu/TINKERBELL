@@ -464,11 +464,11 @@ export default function App() {
             </div>
 
             <div className="hidden md:flex items-center gap-10 text-[15px] font-medium text-slate-600">
+              <a href="#testimonials" className="hover:text-slate-900 transition-colors">סיפורי הצלחה</a>
+              <a href="#problem" className="hover:text-slate-900 transition-colors">איפה הכסף?</a>
+              <a href="#roi" className="hover:text-slate-900 transition-colors">לקוחות</a>
               <a href="#features" className="hover:text-slate-900 transition-colors">פיצ'רים</a>
               <a href="#how-it-works" className="hover:text-slate-900 transition-colors">איך זה עובד</a>
-              <a href="#testimonials" className="hover:text-slate-900 transition-colors">סיפורי הצלחה</a>
-              <a href="#roi" className="hover:text-slate-900 transition-colors">לקוחות</a>
-              <a href="#problem" className="hover:text-slate-900 transition-colors">איפה הכסף?</a>
             </div>
 
             <div className="hidden md:flex items-center gap-6">
@@ -527,7 +527,6 @@ export default function App() {
                     להתנסות במערכת
                     <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1.5 transition-transform" />
                   </button>
-                  <span className="text-slate-400 font-light text-base whitespace-nowrap">ותגלו את הרווחים האבודים שלכם</span>
                 </div>
               </div>
 
@@ -583,6 +582,11 @@ export default function App() {
                       ))}
                     </div>
                   </div>
+                </div>
+
+                {/* Video Widget */}
+                <div className="absolute -right-[154px] bottom-[-81px] w-[312px] rounded-2xl overflow-hidden ring-1 ring-slate-200 shadow-[0_20px_60px_rgba(0,0,0,0.25)] group cursor-pointer z-20" style={{ aspectRatio: '16/9' }}>
+                  <img src="/swimming-pool-beach-luxury-hotel-type-entertainment-complex-amara-dolce-vita-luxury-hotel-resort-tekirova-kemer-turkey (1).jpg" alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
 
                 {/* Alert Widget */}
@@ -708,7 +712,7 @@ export default function App() {
                       { src: '/HOTELS/לוגו מלונות מטיילים.svg', alt: 'מלונות מטיילים' },
                     ].map((logo, i) => (
                       <div key={i} className="h-[9rem] flex items-center justify-center shrink-0">
-                        <img src={logo.src} alt={logo.alt} className="h-[9rem] w-auto object-contain grayscale opacity-65 hover:grayscale-0 hover:opacity-100 transition-all duration-300" />
+                        <img src={logo.src} alt={logo.alt} className="h-[7.65rem] w-auto object-contain grayscale opacity-65 hover:grayscale-0 hover:opacity-100 transition-all duration-300" />
                       </div>
                     ))}
                   </div>
@@ -791,7 +795,7 @@ export default function App() {
         </div>
 
         {/* What Tinkerbell Does — duplicated section */}
-        <section className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:60}}>
+        <section id="features" className="relative overflow-hidden rounded-t-3xl" style={{position:'sticky', top:0, height:'100vh', zIndex:60}}>
           <div className="absolute inset-0 z-0" style={{background: 'radial-gradient(125% 125% at 50% 10%, #fff 40%, #9780ED 100%)'}}></div>
           <div className="max-w-[88rem] mx-auto px-6 lg:px-8 h-full flex items-center relative z-10">
             <div className="grid lg:grid-cols-12 gap-12 w-full h-[calc(100%-6rem)]">
