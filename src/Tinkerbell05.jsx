@@ -466,7 +466,8 @@ export default function App() {
             <div className="hidden md:flex items-center gap-10 text-[15px] font-medium text-slate-600">
               <a href="#features" className="hover:text-slate-900 transition-colors">פיצ'רים</a>
               <a href="#how-it-works" className="hover:text-slate-900 transition-colors">איך זה עובד</a>
-              <a href="#testimonials" className="hover:text-slate-900 transition-colors">לקוחות</a>
+              <a href="#testimonials" className="hover:text-slate-900 transition-colors">סיפורי הצלחה</a>
+              <a href="#roi" className="hover:text-slate-900 transition-colors">לקוחות</a>
               <a href="#problem" className="hover:text-slate-900 transition-colors">איפה הכסף?</a>
             </div>
 
@@ -674,7 +675,7 @@ export default function App() {
         </section>
 
 {/* ROI Stats Section */}
-        <section className="rounded-t-3xl relative" style={{position:'sticky', top:0, height:'100vh', zIndex:30, overflow:'hidden'}}>
+        <section id="roi" className="rounded-t-3xl relative" style={{position:'sticky', top:0, height:'100vh', zIndex:30, overflow:'hidden'}}>
           {/* Radial gradient background */}
           <div className="absolute top-0 z-[-2] h-full w-full rotate-180 transform bg-[#F8F6FE] bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,100%,0)_0,rgba(213,197,255,.5)_100%)]"></div>
 
