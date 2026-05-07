@@ -21,6 +21,7 @@ export default defineConfig({
         tinkerbell03: resolve(__dirname, 'tinkerbell03.html'),
         tinkerbell04: resolve(__dirname, 'tinkerbell04.html'),
         tinkerbell05: resolve(__dirname, 'tinkerbell05.html'),
+        about: resolve(__dirname, 'about.html'),
       },
     },
   },

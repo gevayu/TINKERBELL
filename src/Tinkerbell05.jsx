@@ -1011,7 +1011,7 @@ export default function App() {
                 <div className="md:col-span-2">
                   <h4 className="font-semibold text-white mb-6">חברה</h4>
                   <ul className="space-y-4 text-white/50 font-light">
-                    <li><a href="#" className="hover:text-[#9780ED] transition-colors">אודות הצוות</a></li>
+                    <li><a href="/about.html" className="hover:text-[#9780ED] transition-colors">אודות הצוות</a></li>
                     <li><a href="#" className="hover:text-[#9780ED] transition-colors">לקוחות מספרים</a></li>
                     <li><a href="#" className="hover:text-[#9780ED] transition-colors">יצירת קשר</a></li>
                   </ul>
